@@ -4,3 +4,7 @@ __pycache__/
 patch_*.py
 verif_pages.py
 dvf/
+push.log
+push.err
+gen.log
+gen.err

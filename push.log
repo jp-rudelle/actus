@@ -1,0 +1,50 @@
+21818 ventes de maisons retenues, dernière date DVF : 2025-12-31
+Montpellier                  425 ventes, 3 750 €/m²
+Saint-Gély-du-Fesc           62 ventes, 4 250 €/m²
+Saint-Clément-de-Rivière     16 ventes, 4 080 €/m²
+Montferrier-sur-Lez          11 ventes, 4 810 €/m²
+Castelnau-le-Lez             104 ventes, 4 490 €/m²
+Le Crès                      66 ventes, 3 840 €/m²
+Clapiers                     36 ventes, 4 030 €/m²
+Jacou                        38 ventes, 4 070 €/m²
+Juvignac                     84 ventes, 3 260 €/m²
+Lattes                       119 ventes, 4 550 €/m²
+Pérols                       83 ventes, 4 690 €/m²
+Grabels                      28 ventes, 3 690 €/m²
+Prades-le-Lez                35 ventes, 3 660 €/m²
+Saint-Jean-de-Védas          77 ventes, 4 050 €/m²
+Pignan                       70 ventes, 3 540 €/m²
+Castries                     41 ventes, 3 720 €/m²
+Vendargues                   58 ventes, 3 880 €/m²
+Baillargues                  85 ventes, 3 880 €/m²
+Saint-Brès                   21 ventes, 3 950 €/m²
+Saint-Aunès                  48 ventes, 3 880 €/m²
+Mauguio                      136 ventes, 4 230 €/m²
+Palavas-les-Flots            40 ventes, 5 100 €/m²
+Villeneuve-lès-Maguelone     42 ventes, 3 810 €/m²
+Fabrègues                    57 ventes, 3 700 €/m²
+Lavérune                     22 ventes, 3 620 €/m²
+Saussan                      17 ventes, 3 450 €/m²
+Cournonterral                66 ventes, 3 380 €/m²
+Murviel-lès-Montpellier      16 ventes, 3 760 €/m²
+Saint-Georges-d'Orques       29 ventes, 3 580 €/m²
+Les Matelles                 16 ventes, 3 980 €/m²
+Teyran                       27 ventes, 4 070 €/m²
+Sussargues                   9 ventes, 3 510 €/m²
+Saint-Drézéry                16 ventes, 4 120 €/m²
+Restinclières                13 ventes, 3 750 €/m²
+Montarnaud                   29 ventes, 3 370 €/m²
+Lunel                        219 ventes, 3 020 €/m²
+Frontignan                   164 ventes, 3 430 €/m²
+La Grande-Motte              54 ventes, 6 000 €/m²
+Valergues                    14 ventes, 3 840 €/m²
+Saint-Mathieu-de-Tréviers    20 ventes, 3 730 €/m²
+[main 1288975] Marché 2026-10-25
+ 45 files changed, 656 insertions(+), 201 deletions(-)
+ create mode 100644 generer_marche.py
+ create mode 100644 push.err
+ create mode 100644 push.log
+
+À coller dans content.js :
+const ACTUS_COMMUNES = ["baillargues", "castelnau-le-lez", "castries", "clapiers", "cournonterral", "fabregues", "frontignan", "grabels", "jacou", "juvignac", "la-grande-motte", "lattes", "laverune", "le-cres", "les-matelles", "lunel", "mauguio", "montarnaud", "montferrier-sur-lez", "montpellier", "murviel-les-montpellier", "palavas-les-flots", "perols", "pignan", "prades-le-lez", "restinclieres", "saint-aunes", "saint-bres", "saint-clement-de-riviere", "saint-drezery", "saint-gely-du-fesc", "saint-georges-d-orques", "saint-jean-de-vedas", "saint-mathieu-de-treviers", "saussan", "sussargues", "teyran", "valergues", "vendargues", "villeneuve-les-maguelone"];
+⚠ config.json > agent > mention est vide (EI / RSAC à ajouter si tu veux l'afficher).
