@@ -17,6 +17,7 @@ h1{font-size:23px;line-height:1.25;margin:8px 0 4px}h2{font-size:15px;text-trans
 .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
 .kpi{flex:1 1 105px;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px 14px}
 .kpi b{display:block;font-size:19px;line-height:1.2}.kpi span{color:var(--m);font-size:12.5px}
+.trend{font-weight:600;margin:2px 0 8px;font-size:15px}
 svg{width:100%;height:auto;display:block}
 .ax{fill:var(--m);font-size:12.5px}.gr{stroke:var(--b);stroke-width:1}
 ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px solid var(--b);font-size:14.5px}
@@ -31,9 +32,9 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 <div class="chips" id="pieces"></div>
 <div class="card"><p id="desc"></p></div>
 <div class="kpis" id="kpis"></div>
-<div class="card"><h3 id="ctitre">Prix au m² (médiane glissante sur 6 mois)</h3>
+<div class="card"><h3 id="ctitre">Prix au m² : évolution</h3>
 <div class="chips" id="horiz"></div>
-<div id="chart"></div><p class="meta" id="cmeta"></p></div>
+<p class="trend" id="trend"></p><div id="chart"></div><p class="meta" id="cmeta"></p></div>
 <h2>Dernières ventes comparables</h2>
 <div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
 <h2>Crédit immobilier</h2><div class="card"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
@@ -86,15 +87,42 @@ function describe(c){
   return w;
 }
 function chips(box,items,cur,fn){box.textContent='';items.forEach(function(it){var b=el('button',it[1],'chip');b.type='button';b.setAttribute('aria-pressed',String(it[0]===cur));b.onclick=function(){fn(it[0]);};box.appendChild(b);});}
-function windows(all,n){
+function windows(all,n,win){
   var out=[];
   for(var t=END-n+1;t<=END;t++){
-    var w=all.filter(function(v){return v[0]>t-6&&v[0]<=t}).map(function(v){return v[2]/v[1]});
+    var w=all.filter(function(v){return v[0]>t-win&&v[0]<=t}).map(function(v){return v[2]/v[1]});
     out.push(w.length>=5?{t:t,m:med(w),a:q(w,.25),b:q(w,.75),n:w.length}:{t:t,n:w.length});
   }
   return out;
 }
-function draw(pts){
+function smooth(pts){
+  /* moyenne mobile centrée sur 3 points valides contigus */
+  return pts.map(function(p,i){
+    if(!p.m)return p;
+    var s={m:0,a:0,b:0},c=0;
+    for(var j=i-1;j<=i+1;j++){var x=pts[j];if(x&&x.m){s.m+=x.m;s.a+=x.a;s.b+=x.b;c++;}}
+    return {t:p.t,n:p.n,m:s.m/c,a:s.a/c,b:s.b/c};
+  });
+}
+function trend(ok){
+  /* régression linéaire des médianes lissées : pente en % par an */
+  var n=ok.length,sx=0,sy=0,sxx=0,sxy=0;
+  ok.forEach(function(p){sx+=p.t;sy+=p.m;sxx+=p.t*p.t;sxy+=p.t*p.m;});
+  var d=n*sxx-sx*sx;if(!d)return null;
+  var slope=(n*sxy-sx*sy)/d,icpt=(sy-slope*sx)/n;
+  return {slope:slope,icpt:icpt,pct:slope*12/(sy/n)*100};
+}
+function curve(pts){
+  /* courbe de Catmull-Rom -> Bézier (tension réduite pour éviter les dépassements) */
+  if(pts.length<2)return '';
+  var d='M'+pts[0][0]+','+pts[0][1];
+  for(var i=0;i<pts.length-1;i++){
+    var p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2,k=0.16;
+    d+=' C'+(p1[0]+(p2[0]-p0[0])*k)+','+(p1[1]+(p2[1]-p0[1])*k)+' '+(p2[0]-(p3[0]-p1[0])*k)+','+(p2[1]-(p3[1]-p1[1])*k)+' '+p2[0]+','+p2[1];
+  }
+  return d;
+}
+function draw(pts,tr){
   var box=$('chart');box.textContent='';
   var ok=pts.filter(function(p){return p.m});
   if(ok.length<3){box.appendChild(el('p','Pas assez de ventes comparables pour tracer une courbe fiable sur cette période.','meta'));return;}
@@ -117,15 +145,20 @@ function draw(pts){
   if(run.length)runs.push(run);
   runs.forEach(function(r){
     if(r.length>1){
-      var up=r.map(function(a){return X(a[0])+','+Y(a[1].b)}),dn=r.slice().reverse().map(function(a){return X(a[0])+','+Y(a[1].a)});
-      svg.appendChild(mk('polygon',{points:up.concat(dn).join(' '),fill:'var(--v)','fill-opacity':'.14'}));
-      svg.appendChild(mk('polyline',{points:r.map(function(a){return X(a[0])+','+Y(a[1].m)}).join(' '),fill:'none',stroke:'var(--v)','stroke-width':'2.5','stroke-linejoin':'round'}));
+      var up=r.map(function(a){return [X(a[0]),Y(a[1].b)]}),dn=r.slice().reverse().map(function(a){return [X(a[0]),Y(a[1].a)]});
+      svg.appendChild(mk('path',{d:curve(up)+' L'+dn[0][0]+','+dn[0][1]+' '+curve(dn).replace(/^M[^C]*/,'')+' Z',fill:'var(--v)','fill-opacity':'.13'}));
+      svg.appendChild(mk('path',{d:curve(r.map(function(a){return [X(a[0]),Y(a[1].m)]})),fill:'none',stroke:'var(--v)','stroke-width':'2.8','stroke-linecap':'round'}));
+    } else {
+      svg.appendChild(mk('circle',{cx:X(r[0][0]),cy:Y(r[0][1].m),r:4,fill:'var(--v)'}));
     }
-    r.forEach(function(a){svg.appendChild(mk('circle',{cx:X(a[0]),cy:Y(a[1].m),r:r.length>1?3:4,fill:'var(--v)'}));});
   });
+  if(tr){
+    var y1=tr.icpt+tr.slope*ok[0].t,y2=tr.icpt+tr.slope*ok[ok.length-1].t;
+    svg.appendChild(mk('line',{x1:X(pts.indexOf(ok[0])),y1:Y(y1),x2:X(pts.indexOf(ok[ok.length-1])),y2:Y(y2),stroke:'var(--t)','stroke-width':'1.6','stroke-dasharray':'5 4',opacity:'.7'}));
+  }
   box.appendChild(svg);
   var first=ok[0],last=ok[ok.length-1];
-  $('cmeta').textContent='Trait : prix médian au m² ; zone claire : la moitié centrale des ventes. Entre '+lab(first.t)+' ('+eur(first.m,10)+'/m²) et '+lab(last.t)+' ('+eur(last.m,10)+'/m²), '+(last.m>=first.m?'+':'−')+Math.abs(Math.round((last.m/first.m-1)*100))+' %. Un point n’apparaît que s’il repose sur au moins 5 ventes.';
+  $('cmeta').textContent='Trait vert : prix médian au m² lissé ('+lab(first.t)+' à '+lab(last.t)+') ; zone claire : la moitié centrale des ventes ; pointillé : tendance. Chaque point repose sur au moins 5 ventes ; la courbe est lissée sur 3 mois et ne remplace pas une estimation.'; /* lissage2 */
 }
 function render(){
   var c=choose(),what=describe(c);
@@ -141,10 +174,17 @@ function render(){
   var k=$('kpis');k.textContent='';
   if(cur.length){
     var pm=cur.map(function(v){return v[2]/v[1]}),big=[['Prix médian',eur(med(cur.map(function(v){return v[2]})),1000)],['Médiane au m²',eur(med(pm),10)+'/m²']];
-    if(prev.length>=8&&cur.length>=8){var e=med(pm)/med(prev.map(function(v){return v[2]/v[1]}))-1;big.push(['Sur un an',(e>=0?'+':'−')+Math.abs(Math.round(e*100))+' %']);}
     big.forEach(function(b){var d=el('div',null,'kpi');d.appendChild(el('b',b[1]));d.appendChild(el('span',b[0]));k.appendChild(d);});
   }
-  draw(windows(c.all,st.h));
+  var win=cur.length>=40?6:cur.length>=20?9:12;
+  var pts=smooth(windows(c.all,st.h,win)),ok=pts.filter(function(p){return p.m}),tr=null,tl=$('trend');
+  tl.textContent='';
+  if(ok.length>=6&&cur.length>=15){
+    tr=trend(ok);
+    if(tr){var pc=tr.pct,txt=Math.abs(pc)<1.5?'Tendance : prix stables ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an)':'Tendance : '+(pc>0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an';
+      tl.textContent=txt+' · médiane glissante sur '+win+' mois';}
+  } else {tl.textContent='Tendance non significative : trop peu de ventes comparables.';}
+  draw(pts,tr);
   var ul=$('last');ul.textContent='';
   c.all.slice().sort(function(a,b){return b[0]-a[0]||b[2]-a[2]}).slice(0,3).forEach(function(v){
     var li=el('li',lab(v[0])+' · '+v[1]+' m²'+(v[3]?' · '+v[3]+' pièce'+(v[3]>1?'s':''):'')+' · ');li.appendChild(el('b',eur(v[2],1000)));ul.appendChild(li);});
