@@ -18,7 +18,7 @@ h1{font-size:23px;line-height:1.25;margin:8px 0 4px}h2{font-size:15px;text-trans
 .kpi{flex:1 1 105px;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px 14px}
 .kpi b{display:block;font-size:19px;line-height:1.2}.kpi span{color:var(--m);font-size:12.5px}
 .trend{font-weight:600;margin:2px 0 8px;font-size:15px}
-#map path{stroke:var(--c);stroke-width:1.2;cursor:pointer;transition:opacity .15s}#map path:hover{opacity:.8}
+.gmap path{stroke:var(--c);stroke-width:1.2;cursor:pointer;transition:opacity .15s}#map path:hover{opacity:.8}
 .leg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--m);margin:6px 0}.leg i{flex:1;height:10px;border-radius:5px;background:linear-gradient(90deg,hsl(125 55% 46%),hsl(62 60% 50%),hsl(0 62% 48%))}
 svg{width:100%;height:auto;display:block}
 .ax{fill:var(--m);font-size:12.5px}.gr{stroke:var(--b);stroke-width:1}
@@ -41,9 +41,13 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 <h2>Dernières ventes comparables</h2>
 <div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
 <h2>Carte des prix autour de Montpellier</h2>
-<div class="card"><div class="chips" id="ctypes"></div><p class="trend" id="cinfo"></p><div id="map"></div>
-<div class="leg"><span id="lmin"></span><i></i><span id="lmax"></span></div>
+<div class="card"><div class="chips" id="ctypes"></div><div class="chips" id="cmode"></div><p class="trend" id="cinfo"></p><div id="cmap" class="gmap"></div>
+<div class="leg"><span id="cmin"></span><i></i><span id="cmax"></span></div>
 <p class="meta">Prix médian au m² sur 12 mois, par commune (vert : moins cher, rouge : plus cher ; gris : moins de 8 ventes). Touchez une commune pour le détail. Moyenne communale : l'écart entre quartiers peut être important.</p></div>
+<h2 id="qh" style="display:none">Montpellier : prix par quartier</h2>
+<div class="card" id="qcard" style="display:none"><div class="chips" id="qtypes"></div><div class="chips" id="qmode"></div><p class="trend" id="qinfo"></p><div id="qmap" class="gmap"></div>
+<div class="leg"><span id="qmin"></span><i></i><span id="qmax"></span></div>
+<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Gris : moins de 8 ventes sur 12 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.</p></div>
 <div class="agent"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
 <strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc<br><a class="tel" href="tel:0618455175">📞 06 18 45 51 75</a>
 <p class="legal">Page mise à jour le 25/10/2026. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
@@ -197,32 +201,54 @@ function render(){
     var li=el('li',lab(v[0])+' · '+v[1]+' m²'+(v[3]?' · '+v[3]+' pièce'+(v[3]>1?'s':''):'')+' · ');li.appendChild(el('b',eur(v[2],1000)));ul.appendChild(li);});
   if(!ul.firstChild)ul.appendChild(el('li','Aucune vente comparable enregistrée.'));
 }
-function hue(v,lo,hi){var u=hi>lo?Math.min(1,Math.max(0,(v-lo)/(hi-lo))):.5;return 'hsl('+Math.round(125*(1-u))+' '+(55+Math.round(7*u))+'% '+(46+Math.round(2*u))+'%)';}
-function drawMap(){
-  if(!CARTE)return;
-  var k=st.t,vals=CARTE.c.filter(function(c){return c[k][1]>0}).map(function(c){return c[k][1]});
-  var box=$('map');box.textContent='';
-  chips($('ctypes'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
-  if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner la carte.','meta'));return;}
-  var lo=q(vals,.08),hi=q(vals,.92),ns='http://www.w3.org/2000/svg';
-  var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 '+CARTE.w+' '+CARTE.h);svg.setAttribute('role','img');svg.setAttribute('aria-label','Carte des prix au mètre carré');
-  var cur=null;box.appendChild(svg);
-  function info(c){var d=c[k];$('cinfo').textContent=d[1]?c.n+' : '+eur(d[1],10)+'/m² ('+d[0]+' vente'+(d[0]>1?'s':'')+' sur 12 mois)':c.n+' : trop peu de ventes ('+d[0]+') pour un prix fiable';}
-  CARTE.c.slice().sort(function(a,b){return (a.s===SLUG)-(b.s===SLUG)}).forEach(function(c){
-    var p=document.createElementNS(ns,'path');p.setAttribute('d',c.d);p.setAttribute('fill-rule','evenodd');
-    p.setAttribute('fill',c[k][1]?hue(c[k][1],lo,hi):'#cfd6d1');
-    if(c.s===SLUG){p.style.stroke='var(--t)';p.style.strokeWidth='5';cur=c;}
-    var tt=document.createElementNS(ns,'title');tt.textContent=c.n+(c[k][1]?' : '+eur(c[k][1],10)+'/m²':'');p.appendChild(tt);
-    p.addEventListener('click',function(){info(c);});svg.appendChild(p);
+var MODE='p',QUART=null;
+function evolTxt(v){var r=Math.round(v*10)/10;return (r>0?'+':r<0?'−':'')+Math.abs(r).toFixed(1).replace('.',',')+' %';}
+function hue(u){u=Math.min(1,Math.max(0,u));return 'hsl('+Math.round(125*(1-u))+' '+(55+Math.round(7*u))+'% '+(46+Math.round(2*u))+'%)';}
+function paintMap(P,data,curSlug){
+  var k=st.t,idx=MODE==='p'?1:2,box=$(P+'map'),ns='http://www.w3.org/2000/svg';box.textContent='';
+  chips($(P+'types'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
+  chips($(P+'mode'),[['p','Prix au m²'],['e','Évolution sur 1 an']],MODE,function(v){MODE=v;drawMap();});
+  var vals=data.c.filter(function(c){var d=c[k];return idx===1?d[1]>0:d[2]!==null}).map(function(c){return c[k][idx]});
+  $(P+'info').textContent='';
+  if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner cette carte.','meta'));$(P+'min').textContent='';$(P+'max').textContent='';return;}
+  var lo,hi;
+  if(idx===1){lo=q(vals,.08);hi=q(vals,.92);}
+  else{var L=Math.max(5,Math.min(15,Math.max(Math.abs(q(vals,.1)),Math.abs(q(vals,.9)))));lo=-L;hi=L;}
+  function has(c){var d=c[k];return idx===1?d[1]>0:d[2]!==null;}
+  function col(c){return has(c)?hue(hi>lo?(c[k][idx]-lo)/(hi-lo):.5):'#cfd6d1';}
+  function name(c){return c.n+(c.q&&c.q!==c.n?' ('+c.q+')':'');}
+  function txt(c){var d=c[k];
+    if(idx===1)return d[1]?name(c)+' : '+eur(d[1],10)+'/m² ('+d[0]+' vente'+(d[0]>1?'s':'')+' sur 12 mois)'+(d[2]!==null?' · '+evolTxt(d[2])+' sur un an':''):name(c)+' : trop peu de ventes ('+d[0]+') pour un prix fiable';
+    return d[2]!==null?name(c)+' : '+evolTxt(d[2])+' sur un an ('+eur(d[1],10)+'/m²)':name(c)+' : évolution non calculable (moins de 10 ventes par période)';}
+  var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 '+data.w+' '+data.h);svg.setAttribute('role','img');svg.setAttribute('aria-label','Carte');box.appendChild(svg);
+  var cur=null,info=$(P+'info');
+  data.c.slice().sort(function(a,b){return (a.s===curSlug)-(b.s===curSlug)}).forEach(function(c){
+    var p=document.createElementNS(ns,'path');p.setAttribute('d',c.d);p.setAttribute('fill-rule','evenodd');p.setAttribute('fill',col(c));
+    if(c.s===curSlug){p.style.stroke='var(--t)';p.style.strokeWidth='5';cur=c;}
+    var tt=document.createElementNS(ns,'title');tt.textContent=txt(c);p.appendChild(tt);
+    p.addEventListener('click',function(){info.textContent=txt(c);});svg.appendChild(p);
   });
-  [cur].concat(CARTE.c.filter(function(c){return c.s==='montpellier'&&c.s!==SLUG})).forEach(function(c){
-    if(!c)return;var t=document.createElementNS(ns,'text');t.setAttribute('x',c.x);t.setAttribute('y',c.y);t.setAttribute('text-anchor','middle');
-    t.setAttribute('style','font-size:30px;font-weight:700;paint-order:stroke;stroke:var(--c);stroke-width:7px;fill:var(--t);pointer-events:none');t.textContent=c.n;svg.appendChild(t);});
-  $('lmin').textContent=eur(lo,10);$('lmax').textContent=eur(hi,10)+'/m²';
-  if(cur){info(cur);if(cur[k][1]){var below=vals.filter(function(v){return v<cur[k][1]}).length;var share=Math.round(100*below/vals.length);
-    $('cinfo').textContent+=' · '+(share>=50?'plus cher':'moins cher')+' que '+(share>=50?share:100-share)+' % des communes de la carte';}}
+  function label(c,lines){
+    lines.forEach(function(l){var t=document.createElementNS(ns,'text');t.setAttribute('x',c.x);t.setAttribute('y',c.y+l[1]);t.setAttribute('text-anchor','middle');
+      t.setAttribute('style','font-size:'+l[2]+'px;font-weight:700;paint-order:stroke;stroke:var(--c);stroke-width:6px;fill:var(--t);pointer-events:none');t.textContent=l[0];svg.appendChild(t);});}
+  data.c.forEach(function(c){
+    if(c.s===curSlug||(curSlug&&c.s==='montpellier')||!has(c)||c.b[0]<data.lb||c.b[1]<data.lb*.7)return;
+    var v=idx===1?fr(Math.round(c[k][1]/10)*10):(Math.round(c[k][2])>0?'+':Math.round(c[k][2])<0?'−':'')+Math.abs(Math.round(c[k][2]))+' %';
+    label(c,data.nm?[[c.n,-6,17],[v,17,22]]:[[v,8,24]]);
+  });
+  if(cur)label(cur,[[cur.n,0,28]]);
+  if(curSlug!=='montpellier'){var mt=data.c.filter(function(c){return c.s==='montpellier'})[0];if(mt)label(mt,[[mt.n,0,28]]);}
+  $(P+'min').textContent=idx===1?eur(lo,10):evolTxt(lo);$(P+'max').textContent=idx===1?eur(hi,10)+'/m²':evolTxt(hi);
+  if(cur){info.textContent=txt(cur);
+    if(idx===1&&cur[k][1]){var below=vals.filter(function(v){return v<cur[k][1]}).length,share=Math.round(100*below/vals.length);
+      info.textContent+=' · '+(share>=50?'plus cher':'moins cher')+' que '+(share>=50?share:100-share)+' % des communes de la carte';}}
+}
+function drawMap(){
+  if(CARTE)paintMap('c',CARTE,SLUG);
+  if(QUART&&SLUG==='montpellier'){$('qh').style.display='';$('qcard').style.display='';paintMap('q',QUART,'');}
 }
 try{fetch('../carte.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){CARTE=j;drawMap();}}).catch(function(){});}catch(e){}
+try{if(SLUG==='montpellier')fetch('../quartiers.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){QUART=j;drawMap();}}).catch(function(){});}catch(e){}
 
 render();
 })();

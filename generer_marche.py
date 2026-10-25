@@ -121,7 +121,7 @@ def load_ventes(files):
         else:
             if not (9 <= surf <= 250) or prix < 20000 or not (1000 <= prix / max(surf, 1) <= 12000):
                 continue
-        ventes.append({'slug': slugify(m['nom_commune']), 'code': m['code_commune'], 'kind': kind, 'date': d, 'surf': surf,
+        ventes.append({'slug': slugify(m['nom_commune']), 'code': m['code_commune'], 'lat': num(m['latitude']), 'lon': num(m['longitude']), 'kind': kind, 'date': d, 'surf': surf,
                        'prix': prix, 'pieces': int(num(m['nombre_pieces_principales']))})
     return ventes
 
@@ -234,8 +234,8 @@ def build_carte(ventes, end_mi):
     px = {}
     for v in ventes:
         mi = (v['date'].year - 2000) * 12 + v['date'].month - 1
-        if mi > end_mi - 12 and v['surf'] > 0:
-            px.setdefault(v['code'], {'m': [], 'a': []})[v['kind']].append(v['prix'] / v['surf'])
+        if mi > end_mi - 24 and v['surf'] > 0:
+            px.setdefault(v['code'], {}).setdefault(v['kind'], {'cur': [], 'prev': []})['cur' if mi > end_mi - 12 else 'prev'].append(v['prix'] / v['surf'])
     kx = math.cos(math.radians(43.65))
     sel = []
     for f in feats:
@@ -254,18 +254,98 @@ def build_carte(ventes, end_mi):
     communes = []
     for f, polys, cx, cy in sel:
         d = []
+        xs, ys = [], []
         for poly in polys:
             for ring in poly:
                 pts = [((q[0] * kx - x0) * sc, (-q[1] - y0) * sc) for q in ring]
                 pts = _ring(pts, 0.7)
+                xs.extend(a for a, _ in pts)
+                ys.extend(b for _, b in pts)
                 d.append('M' + 'L'.join('%d %d' % (round(a), round(b)) for a, b in pts) + 'Z')
         rec = {'k': f['properties']['code'], 'n': f['properties']['nom'], 's': slugify(f['properties']['nom']),
                'd': ''.join(d), 'x': round((cx * kx - x0) * sc), 'y': round((-cy - y0) * sc)}
+        rec['b'] = [round(max(xs) - min(xs)), round(max(ys) - min(ys))]
         for kind in ('m', 'a'):
-            vals = px.get(rec['k'], {}).get(kind, [])
-            rec[kind] = [len(vals), round(statistics.median(vals)) if len(vals) >= CARTE_MIN_VENTES else 0]
+            rec[kind] = _stat(px.get(rec['k'], {}).get(kind))
         communes.append(rec)
-    return {'fin_mi': end_mi, 'w': 1000, 'h': H, 'min': CARTE_MIN_VENTES, 'c': communes}
+    return {'fin_mi': end_mi, 'w': 1000, 'h': H, 'lb': 50, 'c': communes}
+
+
+def _stat(d):
+    """[nb de ventes sur 12 mois, médiane €/m² (0 si < 8 ventes), évolution % vs 12 mois précédents (None si < 10 ventes)]"""
+    d = d or {'cur': [], 'prev': []}
+    cur, prev = d['cur'], d['prev']
+    pm = round(statistics.median(cur)) if len(cur) >= CARTE_MIN_VENTES else 0
+    ev = round((statistics.median(cur) / statistics.median(prev) - 1) * 100, 1) if len(cur) >= 10 and len(prev) >= 10 else None
+    return [len(cur), pm, ev]
+
+
+QUARTIERS_URL = 'https://data.montpellier3m.fr/sites/default/files/ressources/VilleMTP_MTP_SousQuartiers.json'
+
+
+def _inside(x, y, ring):
+    ins = False
+    j = len(ring) - 1
+    for i in range(len(ring)):
+        xi, yi = ring[i][0], ring[i][1]
+        xj, yj = ring[j][0], ring[j][1]
+        if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / (yj - yi) + xi:
+            ins = not ins
+        j = i
+    return ins
+
+
+def build_quartiers(ventes, end_mi):
+    """quartiers.json : sous-quartiers de Montpellier (données ouvertes Montpellier Méditerranée Métropole, ODbL)."""
+    gp = DVF_DIR / 'sousquartiers.json'
+    if not gp.exists() or time.time() - gp.stat().st_mtime > 365 * 86400:
+        try:
+            req = urllib.request.Request(QUARTIERS_URL, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=120) as r:
+                gp.write_bytes(r.read())
+        except Exception as e:
+            if not gp.exists():
+                print('Quartiers : données indisponibles (%s), carte ignorée' % e)
+                return None
+    feats = json.loads(gp.read_text(encoding='utf-8-sig'))['features']
+    items = []
+    for f in feats:
+        g = f['geometry']
+        polys = g['coordinates'] if g['type'] == 'MultiPolygon' else [g['coordinates']]
+        lons = [q[0] for poly in polys for q in poly[0]]
+        lats = [q[1] for poly in polys for q in poly[0]]
+        items.append((f, polys, (min(lons), min(lats), max(lons), max(lats))))
+    px = [dict() for _ in items]
+    for v in ventes:
+        if v['code'] != '34172' or not v['lat'] or not v['lon'] or v['surf'] <= 0:
+            continue
+        mi = (v['date'].year - 2000) * 12 + v['date'].month - 1
+        if mi <= end_mi - 24:
+            continue
+        for i, (f, polys, bb) in enumerate(items):
+            if bb[0] <= v['lon'] <= bb[2] and bb[1] <= v['lat'] <= bb[3] and any(_inside(v['lon'], v['lat'], poly[0]) for poly in polys):
+                px[i].setdefault(v['kind'], {'cur': [], 'prev': []})['cur' if mi > end_mi - 12 else 'prev'].append(v['prix'] / v['surf'])
+                break
+    kx = math.cos(math.radians(43.61))
+    allx = [q[0] * kx for _, polys, _ in items for poly in polys for q in poly[0]]
+    ally = [-q[1] for _, polys, _ in items for poly in polys for q in poly[0]]
+    x0, y0 = min(allx), min(ally)
+    sc = 1000.0 / (max(allx) - x0)
+    out = []
+    for i, (f, polys, bb) in enumerate(items):
+        d, xs, ys = [], [], []
+        for poly in polys:
+            for ring in poly:
+                pts = _ring([((q[0] * kx - x0) * sc, (-q[1] - y0) * sc) for q in ring], 0.7)
+                xs.extend(a for a, _ in pts)
+                ys.extend(b for _, b in pts)
+                d.append('M' + 'L'.join('%d %d' % (round(a), round(b)) for a, b in pts) + 'Z')
+        pr = f['properties']
+        out.append({'n': pr.get('name', ''), 'q': pr.get('quartier', ''), 's': slugify(pr.get('name', '')), 'd': ''.join(d),
+                    'x': round(((bb[0] + bb[2]) / 2 * kx - x0) * sc), 'y': round((-(bb[1] + bb[3]) / 2 - y0) * sc),
+                    'b': [round(max(xs) - min(xs)), round(max(ys) - min(ys))],
+                    'm': _stat(px[i].get('m')), 'a': _stat(px[i].get('a'))})
+    return {'fin_mi': end_mi, 'w': 1000, 'h': round((max(ally) - y0) * sc), 'lb': 75, 'nm': 1, 'c': out}
 
 
 def find_git():
@@ -311,6 +391,10 @@ def main():
     if carte:
         (OUT / 'carte.json').write_text(json.dumps(carte, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
         print('carte.json : %d communes' % len(carte['c']))
+    quart = build_quartiers(ventes, end_mi)
+    if quart:
+        (OUT / 'quartiers.json').write_text(json.dumps(quart, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
+        print('quartiers.json : %d sous-quartiers' % len(quart['c']))
     (OUT / 'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Marché</title>', encoding='utf-8')
 
     print('\nÀ coller dans content.js :')
