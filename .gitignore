@@ -8,3 +8,5 @@ push.log
 push.err
 gen.log
 gen.err
+archive/
+maj.log

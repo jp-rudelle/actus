@@ -155,6 +155,27 @@ def render_page(ville, data, end_mi, cfg, now_dt, template):
             .replace('__DATE__', now_dt.strftime('%d/%m/%Y')))
 
 
+def stats_for(data, end_mi):
+    """Petit fichier stats.json par commune (utilisé par l'extension pour l'email)."""
+    import statistics
+
+    def seg(rows):
+        cur = [r for r in rows if r[0] > end_mi - 12]
+        prev = [r for r in rows if end_mi - 24 < r[0] <= end_mi - 12]
+        if len(cur) < 5:
+            return None
+        pm = [r[2] / r[1] for r in cur]
+        o = {'n': len(cur), 'pm2': round(statistics.median(pm)), 'prix': round(statistics.median(r[2] for r in cur))}
+        if len(prev) >= 12 and len(cur) >= 12:
+            o['evol'] = round((statistics.median(pm) / statistics.median(r[2] / r[1] for r in prev) - 1) * 100, 1)
+        return o
+
+    out = {'fin_mi': end_mi, 'm': seg(data['m']), 'a': seg(data['a'])}
+    for p in range(1, 6):
+        out['a%d' % p] = seg([r for r in data['a'] if (r[3] >= 5 if p == 5 else r[3] == p)])
+    return out
+
+
 def find_git():
     return shutil.which('git') or r'C:\Program Files\Git\cmd\git.exe'
 
@@ -192,6 +213,7 @@ def main():
         d = OUT / slugify(v)
         d.mkdir(exist_ok=True)
         (d / 'index.html').write_text(render_page(v, data, end_mi, cfg, now_dt, template), encoding='utf-8')
+        (d / 'stats.json').write_text(json.dumps(stats_for(data, end_mi), separators=(',', ':')), encoding='utf-8')
         print('%-28s maisons %4d · appartements %4d' % (v, len(data['m']), len(data['a'])), flush=True)
     (OUT / 'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Marché</title>', encoding='utf-8')
 
