@@ -14,6 +14,8 @@ Usage :
 Réglages (taux, communes, signature) : config.json. Aucune dépendance : Python 3.8+.
 """
 import argparse
+import math
+import statistics
 import csv
 import gzip
 import html
@@ -119,7 +121,7 @@ def load_ventes(files):
         else:
             if not (9 <= surf <= 250) or prix < 20000 or not (1000 <= prix / max(surf, 1) <= 12000):
                 continue
-        ventes.append({'slug': slugify(m['nom_commune']), 'kind': kind, 'date': d, 'surf': surf,
+        ventes.append({'slug': slugify(m['nom_commune']), 'code': m['code_commune'], 'kind': kind, 'date': d, 'surf': surf,
                        'prix': prix, 'pieces': int(num(m['nombre_pieces_principales']))})
     return ventes
 
@@ -150,6 +152,7 @@ def agent_html(cfg):
 def render_page(ville, data, end_mi, cfg, now_dt, template):
     payload = json.dumps(data, separators=(',', ':')).replace('</', '<\\/')
     return (template.replace('__VILLEJS__', json.dumps(ville, ensure_ascii=False).replace('</', '<\\/'))
+            .replace('__SLUGJS__', json.dumps(slugify(ville)))
             .replace('__VILLE__', esc(ville)).replace('__DATA__', payload).replace('__END__', str(end_mi))
             .replace('__TAUX__', taux_html(cfg, now_dt)).replace('__AGENT__', agent_html(cfg))
             .replace('__DATE__', now_dt.strftime('%d/%m/%Y')))
@@ -174,6 +177,95 @@ def stats_for(data, end_mi):
     for p in range(1, 6):
         out['a%d' % p] = seg([r for r in data['a'] if (r[3] >= 5 if p == 5 else r[3] == p)])
     return out
+
+
+GEO_URL = 'https://geo.api.gouv.fr/departements/34/communes?fields=nom,code&format=geojson&geometry=contour'
+BBOX = (3.58, 43.44, 4.22, 43.83)   # Montpellier et alentours (lon min, lat min, lon max, lat max)
+CARTE_MIN_VENTES = 8
+
+
+def _dp(pts, eps):
+    """Douglas-Peucker sur une polyligne ouverte."""
+    if len(pts) < 3:
+        return pts
+    keep = [False] * len(pts)
+    keep[0] = keep[-1] = True
+    stack = [(0, len(pts) - 1)]
+    while stack:
+        a, b = stack.pop()
+        ax, ay = pts[a]
+        bx, by = pts[b]
+        dx, dy = bx - ax, by - ay
+        den = (dx * dx + dy * dy) or 1e-12
+        md, mi = 0.0, -1
+        for i in range(a + 1, b):
+            px, py = pts[i]
+            t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / den))
+            d = (px - ax - t * dx) ** 2 + (py - ay - t * dy) ** 2
+            if d > md:
+                md, mi = d, i
+        if mi > 0 and md > eps * eps:
+            keep[mi] = True
+            stack.append((a, mi))
+            stack.append((mi, b))
+    return [q for q, k in zip(pts, keep) if k]
+
+
+def _ring(pts, eps):
+    pts = pts[:-1] if len(pts) > 3 and pts[0] == pts[-1] else pts
+    far = max(range(len(pts)), key=lambda i: (pts[i][0] - pts[0][0]) ** 2 + (pts[i][1] - pts[0][1]) ** 2)
+    out = _dp(pts[:far + 1], eps) + _dp(pts[far:] + [pts[0]], eps)[1:-1]
+    return out if len(out) >= 3 else pts
+
+
+def build_carte(ventes, end_mi):
+    """carte.json : communes autour de Montpellier (contours simplifiés) + prix médian au m² sur 12 mois."""
+    gp = DVF_DIR / 'communes34.geojson'
+    if not gp.exists() or time.time() - gp.stat().st_mtime > 365 * 86400:
+        try:
+            req = urllib.request.Request(GEO_URL, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=120) as r:
+                gp.write_bytes(r.read())
+        except Exception as e:
+            if not gp.exists():
+                print('Carte : contours indisponibles (%s), carte ignorée' % e)
+                return None
+    feats = json.loads(gp.read_text(encoding='utf-8'))['features']
+    px = {}
+    for v in ventes:
+        mi = (v['date'].year - 2000) * 12 + v['date'].month - 1
+        if mi > end_mi - 12 and v['surf'] > 0:
+            px.setdefault(v['code'], {'m': [], 'a': []})[v['kind']].append(v['prix'] / v['surf'])
+    kx = math.cos(math.radians(43.65))
+    sel = []
+    for f in feats:
+        g = f['geometry']
+        polys = g['coordinates'] if g['type'] == 'MultiPolygon' else [g['coordinates']]
+        lons = [q[0] for poly in polys for q in poly[0]]
+        lats = [q[1] for poly in polys for q in poly[0]]
+        cx, cy = (min(lons) + max(lons)) / 2, (min(lats) + max(lats)) / 2
+        if BBOX[0] <= cx <= BBOX[2] and BBOX[1] <= cy <= BBOX[3]:
+            sel.append((f, polys, cx, cy))
+    allx = [q[0] * kx for _, polys, _, _ in sel for poly in polys for q in poly[0]]
+    ally = [-q[1] for _, polys, _, _ in sel for poly in polys for q in poly[0]]
+    x0, y0 = min(allx), min(ally)
+    sc = 1000.0 / (max(allx) - x0)
+    H = round((max(ally) - y0) * sc)
+    communes = []
+    for f, polys, cx, cy in sel:
+        d = []
+        for poly in polys:
+            for ring in poly:
+                pts = [((q[0] * kx - x0) * sc, (-q[1] - y0) * sc) for q in ring]
+                pts = _ring(pts, 0.7)
+                d.append('M' + 'L'.join('%d %d' % (round(a), round(b)) for a, b in pts) + 'Z')
+        rec = {'k': f['properties']['code'], 'n': f['properties']['nom'], 's': slugify(f['properties']['nom']),
+               'd': ''.join(d), 'x': round((cx * kx - x0) * sc), 'y': round((-cy - y0) * sc)}
+        for kind in ('m', 'a'):
+            vals = px.get(rec['k'], {}).get(kind, [])
+            rec[kind] = [len(vals), round(statistics.median(vals)) if len(vals) >= CARTE_MIN_VENTES else 0]
+        communes.append(rec)
+    return {'fin_mi': end_mi, 'w': 1000, 'h': H, 'min': CARTE_MIN_VENTES, 'c': communes}
 
 
 def find_git():
@@ -215,6 +307,10 @@ def main():
         (d / 'index.html').write_text(render_page(v, data, end_mi, cfg, now_dt, template), encoding='utf-8')
         (d / 'stats.json').write_text(json.dumps(stats_for(data, end_mi), separators=(',', ':')), encoding='utf-8')
         print('%-28s maisons %4d · appartements %4d' % (v, len(data['m']), len(data['a'])), flush=True)
+    carte = build_carte(ventes, end_mi)
+    if carte:
+        (OUT / 'carte.json').write_text(json.dumps(carte, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
+        print('carte.json : %d communes' % len(carte['c']))
     (OUT / 'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Marché</title>', encoding='utf-8')
 
     print('\nÀ coller dans content.js :')

@@ -18,6 +18,8 @@ h1{font-size:23px;line-height:1.25;margin:8px 0 4px}h2{font-size:15px;text-trans
 .kpi{flex:1 1 105px;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px 14px}
 .kpi b{display:block;font-size:19px;line-height:1.2}.kpi span{color:var(--m);font-size:12.5px}
 .trend{font-weight:600;margin:2px 0 8px;font-size:15px}
+#map path{stroke:var(--c);stroke-width:1.2;cursor:pointer;transition:opacity .15s}#map path:hover{opacity:.8}
+.leg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--m);margin:6px 0}.leg i{flex:1;height:10px;border-radius:5px;background:linear-gradient(90deg,hsl(125 55% 46%),hsl(62 60% 50%),hsl(0 62% 48%))}
 svg{width:100%;height:auto;display:block}
 .ax{fill:var(--m);font-size:12.5px}.gr{stroke:var(--b);stroke-width:1}
 ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px solid var(--b);font-size:14.5px}
@@ -27,7 +29,8 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 @media (prefers-color-scheme:dark){:root{--t:#e8eee9;--m:#9aa8a0;--b:#2c3a32;--bg:#121a15;--c:#1a251e;--v:#4caf50}}
 </style></head><body><main>
 <h1 id="titre">Prix de vente à Saint-Aunès</h1>
-<p class="sub" id="sous">Ventes réelles enregistrées (DVF)</p>
+<p class="sub" id="sous">Taux de crédit et ventes réelles enregistrées (DVF)</p>
+<h2>Crédit immobilier</h2><div class="card"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
 <div class="chips" id="types"></div>
 <div class="chips" id="pieces"></div>
 <div class="card"><p id="desc"></p></div>
@@ -37,14 +40,17 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 <p class="trend" id="trend"></p><div id="chart"></div><p class="meta" id="cmeta"></p></div>
 <h2>Dernières ventes comparables</h2>
 <div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
-<h2>Crédit immobilier</h2><div class="card"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
+<h2>Carte des prix autour de Montpellier</h2>
+<div class="card"><div class="chips" id="ctypes"></div><p class="trend" id="cinfo"></p><div id="map"></div>
+<div class="leg"><span id="lmin"></span><i></i><span id="lmax"></span></div>
+<p class="meta">Prix médian au m² sur 12 mois, par commune (vert : moins cher, rouge : plus cher ; gris : moins de 8 ventes). Touchez une commune pour le détail. Moyenne communale : l'écart entre quartiers peut être important.</p></div>
 <div class="agent"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
 <strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc<br><a class="tel" href="tel:0618455175">📞 06 18 45 51 75</a>
 <p class="legal">Page mise à jour le 25/10/2026. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
 </main>
 <script>
 (function(){
-var D={"m":[[300,83,304000,4],[300,65,282900,3],[301,135,522010,7],[300,103,419200,4],[302,85,333920,4],[302,107,426900,4],[302,100,495000,4],[302,121,529700,4],[302,90,75000,4],[302,139,648880,5],[303,101,263550,4],[302,170,285000,7],[302,125,454150,7],[303,90,330000,4],[303,102,475800,7],[304,81,255000,3],[305,60,350000,3],[305,108,503930,4],[305,100,449500,4],[305,90,434000,4],[305,69,260000,3],[306,66,251460,3],[306,84,316800,4],[306,66,251460,3],[305,145,440000,5],[305,141,490000,5],[306,84,326700,4],[306,127,641400,5],[306,95,508000,4],[306,92,508000,4],[306,101,371770,4],[306,100,391250,4],[307,172,769500,5],[307,138,381500,6],[307,84,304425,4],[303,75,134436,3],[308,135,432800,6],[309,66,251460,3],[309,83,372520,4],[309,66,251460,3],[309,120,431250,4],[309,70,233980,3],[309,90,379890,4],[311,47,273500,4],[311,127,418780,5],[311,111,462000,3],[311,173,959800,5],[311,103,440400,3],[288,137,455200,6],[288,89,416000,4],[288,62,260000,4],[288,120,390000,5],[289,80,540400,4],[289,160,598700,7],[289,110,809250,6],[289,76,247500,4],[290,92,518500,4],[291,127,485000,2],[291,118,430000,5],[292,81,359430,4],[292,94,292400,5],[294,104,474055,1],[295,130,640629,4],[295,95,100000,4],[296,86,360600,4],[297,99,477011,4],[297,151,518000,7],[298,103,446992,5],[298,120,433000,6],[276,154,763000,5],[276,64,294980,3],[276,80,471800,4],[276,70,263000,2],[277,118,149000,4],[277,160,560961,6],[277,123,577000,7],[278,90,384250,6],[277,92,357000,4],[278,84,180720,3],[278,100,155000,4],[279,84,455500,4],[279,80,442320,3],[280,85,343450,4],[280,86,380496,4],[280,83,401280,3],[280,110,675100,4],[282,94,550000,4],[282,140,513550,5],[283,119,547000,4],[283,106,488020,5],[284,104,447000,3],[283,137,539800,5],[283,119,591106,4],[284,117,549410,5],[284,114,522850,4],[287,88,308000,3]],"a":[[300,64,205000,3],[300,43,185500,2],[300,16,67000,1],[300,37,109250,1],[301,64,131075,3],[302,23,77000,1],[302,107,495490,1],[302,60,283990,3],[302,67,192500,3],[302,68,285280,3],[303,63,190120,3],[305,38,158000,2],[305,49,141200,2],[305,41,204980,2],[306,63,267490,3],[307,57,293500,3],[306,56,232055,3],[308,32,100000,1],[308,44,194000,2],[311,94,393970,4],[311,33,138500,1],[311,59,259150,2],[288,80,344650,3],[288,63,199000,3],[288,63,195000,3],[288,43,137000,2],[288,67,202000,3],[288,86,222000,4],[288,61,194000,3],[291,60,132500,2],[291,67,201960,3],[293,60,304750,3],[293,63,197010,3],[296,62,251750,3],[296,85,211860,3],[297,63,266100,3],[297,41,196520,2],[296,44,118000,2],[297,60,295000,3],[297,43,184800,2],[298,43,195500,2],[298,67,301700,3],[277,40,175525,2],[277,100,1056000,3],[278,78,325900,4],[278,100,275000,4],[279,31,128050,1],[279,47,159000,2],[279,65,268840,3],[282,62,257000,3],[283,37,147816,2],[284,75,243500,3],[284,50,177000,2],[285,49,198090,2],[286,39,203700,2],[287,23,121780,1]]}, END=311, VILLE="Saint-Aunès";
+var D={"m":[[300,83,304000,4],[300,65,282900,3],[301,135,522010,7],[300,103,419200,4],[302,85,333920,4],[302,107,426900,4],[302,100,495000,4],[302,121,529700,4],[302,90,75000,4],[302,139,648880,5],[303,101,263550,4],[302,170,285000,7],[302,125,454150,7],[303,90,330000,4],[303,102,475800,7],[304,81,255000,3],[305,60,350000,3],[305,108,503930,4],[305,100,449500,4],[305,90,434000,4],[305,69,260000,3],[306,66,251460,3],[306,84,316800,4],[306,66,251460,3],[305,145,440000,5],[305,141,490000,5],[306,84,326700,4],[306,127,641400,5],[306,95,508000,4],[306,92,508000,4],[306,101,371770,4],[306,100,391250,4],[307,172,769500,5],[307,138,381500,6],[307,84,304425,4],[303,75,134436,3],[308,135,432800,6],[309,66,251460,3],[309,83,372520,4],[309,66,251460,3],[309,120,431250,4],[309,70,233980,3],[309,90,379890,4],[311,47,273500,4],[311,127,418780,5],[311,111,462000,3],[311,173,959800,5],[311,103,440400,3],[288,137,455200,6],[288,89,416000,4],[288,62,260000,4],[288,120,390000,5],[289,80,540400,4],[289,160,598700,7],[289,110,809250,6],[289,76,247500,4],[290,92,518500,4],[291,127,485000,2],[291,118,430000,5],[292,81,359430,4],[292,94,292400,5],[294,104,474055,1],[295,130,640629,4],[295,95,100000,4],[296,86,360600,4],[297,99,477011,4],[297,151,518000,7],[298,103,446992,5],[298,120,433000,6],[276,154,763000,5],[276,64,294980,3],[276,80,471800,4],[276,70,263000,2],[277,118,149000,4],[277,160,560961,6],[277,123,577000,7],[278,90,384250,6],[277,92,357000,4],[278,84,180720,3],[278,100,155000,4],[279,84,455500,4],[279,80,442320,3],[280,85,343450,4],[280,86,380496,4],[280,83,401280,3],[280,110,675100,4],[282,94,550000,4],[282,140,513550,5],[283,119,547000,4],[283,106,488020,5],[284,104,447000,3],[283,137,539800,5],[283,119,591106,4],[284,117,549410,5],[284,114,522850,4],[287,88,308000,3]],"a":[[300,64,205000,3],[300,43,185500,2],[300,16,67000,1],[300,37,109250,1],[301,64,131075,3],[302,23,77000,1],[302,107,495490,1],[302,60,283990,3],[302,67,192500,3],[302,68,285280,3],[303,63,190120,3],[305,38,158000,2],[305,49,141200,2],[305,41,204980,2],[306,63,267490,3],[307,57,293500,3],[306,56,232055,3],[308,32,100000,1],[308,44,194000,2],[311,94,393970,4],[311,33,138500,1],[311,59,259150,2],[288,80,344650,3],[288,63,199000,3],[288,63,195000,3],[288,43,137000,2],[288,67,202000,3],[288,86,222000,4],[288,61,194000,3],[291,60,132500,2],[291,67,201960,3],[293,60,304750,3],[293,63,197010,3],[296,62,251750,3],[296,85,211860,3],[297,63,266100,3],[297,41,196520,2],[296,44,118000,2],[297,60,295000,3],[297,43,184800,2],[298,43,195500,2],[298,67,301700,3],[277,40,175525,2],[277,100,1056000,3],[278,78,325900,4],[278,100,275000,4],[279,31,128050,1],[279,47,159000,2],[279,65,268840,3],[282,62,257000,3],[283,37,147816,2],[284,75,243500,3],[284,50,177000,2],[285,49,198090,2],[286,39,203700,2],[287,23,121780,1]]}, END=311, VILLE="Saint-Aunès", SLUG="saint-aunes", CARTE=null;
 var MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 function lab(mi){return MOIS[mi%12]+' '+(2000+Math.floor(mi/12));}
 function fr(x){return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
@@ -185,11 +191,39 @@ function render(){
       tl.textContent=txt+' · médiane glissante sur '+win+' mois';}
   } else {tl.textContent='Tendance non significative : trop peu de ventes comparables.';}
   draw(pts,tr);
+  drawMap();
   var ul=$('last');ul.textContent='';
   c.all.slice().sort(function(a,b){return b[0]-a[0]||b[2]-a[2]}).slice(0,3).forEach(function(v){
     var li=el('li',lab(v[0])+' · '+v[1]+' m²'+(v[3]?' · '+v[3]+' pièce'+(v[3]>1?'s':''):'')+' · ');li.appendChild(el('b',eur(v[2],1000)));ul.appendChild(li);});
   if(!ul.firstChild)ul.appendChild(el('li','Aucune vente comparable enregistrée.'));
 }
+function hue(v,lo,hi){var u=hi>lo?Math.min(1,Math.max(0,(v-lo)/(hi-lo))):.5;return 'hsl('+Math.round(125*(1-u))+' '+(55+Math.round(7*u))+'% '+(46+Math.round(2*u))+'%)';}
+function drawMap(){
+  if(!CARTE)return;
+  var k=st.t,vals=CARTE.c.filter(function(c){return c[k][1]>0}).map(function(c){return c[k][1]});
+  var box=$('map');box.textContent='';
+  chips($('ctypes'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
+  if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner la carte.','meta'));return;}
+  var lo=q(vals,.08),hi=q(vals,.92),ns='http://www.w3.org/2000/svg';
+  var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 '+CARTE.w+' '+CARTE.h);svg.setAttribute('role','img');svg.setAttribute('aria-label','Carte des prix au mètre carré');
+  var cur=null;box.appendChild(svg);
+  function info(c){var d=c[k];$('cinfo').textContent=d[1]?c.n+' : '+eur(d[1],10)+'/m² ('+d[0]+' vente'+(d[0]>1?'s':'')+' sur 12 mois)':c.n+' : trop peu de ventes ('+d[0]+') pour un prix fiable';}
+  CARTE.c.slice().sort(function(a,b){return (a.s===SLUG)-(b.s===SLUG)}).forEach(function(c){
+    var p=document.createElementNS(ns,'path');p.setAttribute('d',c.d);p.setAttribute('fill-rule','evenodd');
+    p.setAttribute('fill',c[k][1]?hue(c[k][1],lo,hi):'#cfd6d1');
+    if(c.s===SLUG){p.style.stroke='var(--t)';p.style.strokeWidth='5';cur=c;}
+    var tt=document.createElementNS(ns,'title');tt.textContent=c.n+(c[k][1]?' : '+eur(c[k][1],10)+'/m²':'');p.appendChild(tt);
+    p.addEventListener('click',function(){info(c);});svg.appendChild(p);
+  });
+  [cur].concat(CARTE.c.filter(function(c){return c.s==='montpellier'&&c.s!==SLUG})).forEach(function(c){
+    if(!c)return;var t=document.createElementNS(ns,'text');t.setAttribute('x',c.x);t.setAttribute('y',c.y);t.setAttribute('text-anchor','middle');
+    t.setAttribute('style','font-size:30px;font-weight:700;paint-order:stroke;stroke:var(--c);stroke-width:7px;fill:var(--t);pointer-events:none');t.textContent=c.n;svg.appendChild(t);});
+  $('lmin').textContent=eur(lo,10);$('lmax').textContent=eur(hi,10)+'/m²';
+  if(cur){info(cur);if(cur[k][1]){var below=vals.filter(function(v){return v<cur[k][1]}).length;var share=Math.round(100*below/vals.length);
+    $('cinfo').textContent+=' · '+(share>=50?'plus cher':'moins cher')+' que '+(share>=50?share:100-share)+' % des communes de la carte';}}
+}
+try{fetch('../carte.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){CARTE=j;drawMap();}}).catch(function(){});}catch(e){}
+
 render();
 })();
 </script></body></html>

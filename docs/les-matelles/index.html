@@ -18,6 +18,8 @@ h1{font-size:23px;line-height:1.25;margin:8px 0 4px}h2{font-size:15px;text-trans
 .kpi{flex:1 1 105px;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px 14px}
 .kpi b{display:block;font-size:19px;line-height:1.2}.kpi span{color:var(--m);font-size:12.5px}
 .trend{font-weight:600;margin:2px 0 8px;font-size:15px}
+#map path{stroke:var(--c);stroke-width:1.2;cursor:pointer;transition:opacity .15s}#map path:hover{opacity:.8}
+.leg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--m);margin:6px 0}.leg i{flex:1;height:10px;border-radius:5px;background:linear-gradient(90deg,hsl(125 55% 46%),hsl(62 60% 50%),hsl(0 62% 48%))}
 svg{width:100%;height:auto;display:block}
 .ax{fill:var(--m);font-size:12.5px}.gr{stroke:var(--b);stroke-width:1}
 ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px solid var(--b);font-size:14.5px}
@@ -27,7 +29,8 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 @media (prefers-color-scheme:dark){:root{--t:#e8eee9;--m:#9aa8a0;--b:#2c3a32;--bg:#121a15;--c:#1a251e;--v:#4caf50}}
 </style></head><body><main>
 <h1 id="titre">Prix de vente à Les Matelles</h1>
-<p class="sub" id="sous">Ventes réelles enregistrées (DVF)</p>
+<p class="sub" id="sous">Taux de crédit et ventes réelles enregistrées (DVF)</p>
+<h2>Crédit immobilier</h2><div class="card"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
 <div class="chips" id="types"></div>
 <div class="chips" id="pieces"></div>
 <div class="card"><p id="desc"></p></div>
@@ -37,14 +40,17 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 <p class="trend" id="trend"></p><div id="chart"></div><p class="meta" id="cmeta"></p></div>
 <h2>Dernières ventes comparables</h2>
 <div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
-<h2>Crédit immobilier</h2><div class="card"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
+<h2>Carte des prix autour de Montpellier</h2>
+<div class="card"><div class="chips" id="ctypes"></div><p class="trend" id="cinfo"></p><div id="map"></div>
+<div class="leg"><span id="lmin"></span><i></i><span id="lmax"></span></div>
+<p class="meta">Prix médian au m² sur 12 mois, par commune (vert : moins cher, rouge : plus cher ; gris : moins de 8 ventes). Touchez une commune pour le détail. Moyenne communale : l'écart entre quartiers peut être important.</p></div>
 <div class="agent"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
 <strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc<br><a class="tel" href="tel:0618455175">📞 06 18 45 51 75</a>
 <p class="legal">Page mise à jour le 25/10/2026. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
 </main>
 <script>
 (function(){
-var D={"m":[[300,125,486000,4],[302,67,297140,3],[304,95,620000,4],[305,134,577650,5],[305,40,130000,2],[306,129,329200,4],[289,128,463750,5],[289,75,389400,3],[289,105,490500,4],[292,50,143800,2],[292,110,484125,4],[293,135,365694,6],[292,146,594000,5],[294,110,536850,5],[297,100,245000,4],[298,80,216280,6],[277,95,492200,4],[279,143,250000,4],[279,55,280000,3],[280,130,490000,6],[281,80,215000,5],[281,100,435000,4],[281,96,504500,4],[282,76,292590,4],[282,100,461830,4],[285,132,600700,5]],"a":[[302,45,200150,2],[304,95,106250,4],[308,68,260700,3],[288,80,159600,2],[292,48,185000,2],[292,38,144000,2],[296,83,333000,4],[279,60,282150,3]]}, END=311, VILLE="Les Matelles";
+var D={"m":[[300,125,486000,4],[302,67,297140,3],[304,95,620000,4],[305,134,577650,5],[305,40,130000,2],[306,129,329200,4],[289,128,463750,5],[289,75,389400,3],[289,105,490500,4],[292,50,143800,2],[292,110,484125,4],[293,135,365694,6],[292,146,594000,5],[294,110,536850,5],[297,100,245000,4],[298,80,216280,6],[277,95,492200,4],[279,143,250000,4],[279,55,280000,3],[280,130,490000,6],[281,80,215000,5],[281,100,435000,4],[281,96,504500,4],[282,76,292590,4],[282,100,461830,4],[285,132,600700,5]],"a":[[302,45,200150,2],[304,95,106250,4],[308,68,260700,3],[288,80,159600,2],[292,48,185000,2],[292,38,144000,2],[296,83,333000,4],[279,60,282150,3]]}, END=311, VILLE="Les Matelles", SLUG="les-matelles", CARTE=null;
 var MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 function lab(mi){return MOIS[mi%12]+' '+(2000+Math.floor(mi/12));}
 function fr(x){return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
@@ -185,11 +191,39 @@ function render(){
       tl.textContent=txt+' · médiane glissante sur '+win+' mois';}
   } else {tl.textContent='Tendance non significative : trop peu de ventes comparables.';}
   draw(pts,tr);
+  drawMap();
   var ul=$('last');ul.textContent='';
   c.all.slice().sort(function(a,b){return b[0]-a[0]||b[2]-a[2]}).slice(0,3).forEach(function(v){
     var li=el('li',lab(v[0])+' · '+v[1]+' m²'+(v[3]?' · '+v[3]+' pièce'+(v[3]>1?'s':''):'')+' · ');li.appendChild(el('b',eur(v[2],1000)));ul.appendChild(li);});
   if(!ul.firstChild)ul.appendChild(el('li','Aucune vente comparable enregistrée.'));
 }
+function hue(v,lo,hi){var u=hi>lo?Math.min(1,Math.max(0,(v-lo)/(hi-lo))):.5;return 'hsl('+Math.round(125*(1-u))+' '+(55+Math.round(7*u))+'% '+(46+Math.round(2*u))+'%)';}
+function drawMap(){
+  if(!CARTE)return;
+  var k=st.t,vals=CARTE.c.filter(function(c){return c[k][1]>0}).map(function(c){return c[k][1]});
+  var box=$('map');box.textContent='';
+  chips($('ctypes'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
+  if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner la carte.','meta'));return;}
+  var lo=q(vals,.08),hi=q(vals,.92),ns='http://www.w3.org/2000/svg';
+  var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 '+CARTE.w+' '+CARTE.h);svg.setAttribute('role','img');svg.setAttribute('aria-label','Carte des prix au mètre carré');
+  var cur=null;box.appendChild(svg);
+  function info(c){var d=c[k];$('cinfo').textContent=d[1]?c.n+' : '+eur(d[1],10)+'/m² ('+d[0]+' vente'+(d[0]>1?'s':'')+' sur 12 mois)':c.n+' : trop peu de ventes ('+d[0]+') pour un prix fiable';}
+  CARTE.c.slice().sort(function(a,b){return (a.s===SLUG)-(b.s===SLUG)}).forEach(function(c){
+    var p=document.createElementNS(ns,'path');p.setAttribute('d',c.d);p.setAttribute('fill-rule','evenodd');
+    p.setAttribute('fill',c[k][1]?hue(c[k][1],lo,hi):'#cfd6d1');
+    if(c.s===SLUG){p.style.stroke='var(--t)';p.style.strokeWidth='5';cur=c;}
+    var tt=document.createElementNS(ns,'title');tt.textContent=c.n+(c[k][1]?' : '+eur(c[k][1],10)+'/m²':'');p.appendChild(tt);
+    p.addEventListener('click',function(){info(c);});svg.appendChild(p);
+  });
+  [cur].concat(CARTE.c.filter(function(c){return c.s==='montpellier'&&c.s!==SLUG})).forEach(function(c){
+    if(!c)return;var t=document.createElementNS(ns,'text');t.setAttribute('x',c.x);t.setAttribute('y',c.y);t.setAttribute('text-anchor','middle');
+    t.setAttribute('style','font-size:30px;font-weight:700;paint-order:stroke;stroke:var(--c);stroke-width:7px;fill:var(--t);pointer-events:none');t.textContent=c.n;svg.appendChild(t);});
+  $('lmin').textContent=eur(lo,10);$('lmax').textContent=eur(hi,10)+'/m²';
+  if(cur){info(cur);if(cur[k][1]){var below=vals.filter(function(v){return v<cur[k][1]}).length;var share=Math.round(100*below/vals.length);
+    $('cinfo').textContent+=' · '+(share>=50?'plus cher':'moins cher')+' que '+(share>=50?share:100-share)+' % des communes de la carte';}}
+}
+try{fetch('../carte.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){CARTE=j;drawMap();}}).catch(function(){});}catch(e){}
+
 render();
 })();
 </script></body></html>
