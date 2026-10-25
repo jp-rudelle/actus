@@ -135,8 +135,25 @@ def taux_html(cfg, now_dt):
     d = datetime.fromisoformat(t['date']).strftime('%d/%m/%Y')
     u = t.get('url') or ''
     src = ('<a href="%s">%s</a>' % (esc(u), esc(t['source']))) if re.match(r'https?://', u) else esc(t['source'])
-    return ('<h2>Crédit immobilier</h2><div class="card"><h3>%s</h3><p>%s</p><p class="meta">Chiffres relevés le %s · Source : %s</p></div>'
+    return ('<h2>Crédit immobilier</h2><div class="card" data-sec="taux"><h3>%s</h3><p>%s</p><p class="meta">Chiffres relevés le %s · Source : %s</p></div>'
             % (esc(t['titre']), esc(t['texte']), d, src))
+
+
+def compteur_html(cfg):
+    """Compteur de visites anonyme GoatCounter (sans cookie). Actif seulement si config.json > compteur est renseigné."""
+    c = (cfg.get('compteur') or '').strip().lower()
+    if not re.fullmatch(r'[a-z0-9-]{2,40}', c):
+        return ''
+    return '<script data-goatcounter="https://%s.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>' % c
+
+
+def calc_json(cfg, now_dt):
+    t = cfg['taux']
+    c = t.get('calc')
+    age = (now_dt - datetime.fromisoformat(t['date']).replace(tzinfo=timezone.utc)).days
+    if not c or age > t.get('max_age_jours', 40):
+        return 'null'
+    return json.dumps({'pct': c['pct'], 'annees': c['annees'], 'date': datetime.fromisoformat(t['date']).strftime('%d/%m/%Y')})
 
 
 def agent_html(cfg):
@@ -154,6 +171,7 @@ def render_page(ville, data, end_mi, cfg, now_dt, template):
     return (template.replace('__VILLEJS__', json.dumps(ville, ensure_ascii=False).replace('</', '<\\/'))
             .replace('__SLUGJS__', json.dumps(slugify(ville)))
             .replace('__VILLE__', esc(ville)).replace('__DATA__', payload).replace('__END__', str(end_mi))
+            .replace('__COMPTEUR__', compteur_html(cfg)).replace('__CALC__', calc_json(cfg, now_dt))
             .replace('__TAUX__', taux_html(cfg, now_dt)).replace('__AGENT__', agent_html(cfg))
             .replace('__DATE__', now_dt.strftime('%d/%m/%Y')))
 

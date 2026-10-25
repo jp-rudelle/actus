@@ -12,7 +12,11 @@
     "date": "2026-10-12",
     "source": "Meilleurtaux / Pretto",
     "url": "https://www.meilleurtaux.com/credit-immobilier/taux-actuels/",
-    "max_age_jours": 40
+    "max_age_jours": 40,
+    "calc": {
+      "pct": 3.6,
+      "annees": 20
+    }
   },
   "chiffres": [],
   "communes": [
@@ -57,5 +61,6 @@
     "Valergues",
     "Saint-Mathieu-de-Tréviers"
   ],
-  "max_actus": 5
+  "max_actus": 5,
+  "compteur": ""
 }
