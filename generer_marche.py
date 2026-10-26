@@ -275,7 +275,7 @@ def stats_for(data, end_mi):
 
 GEO_URL = 'https://geo.api.gouv.fr/departements/34/communes?fields=nom,code&format=geojson&geometry=contour'
 BBOX = (3.58, 43.44, 4.22, 43.83)   # Montpellier et alentours (lon min, lat min, lon max, lat max)
-CARTE_MIN_VENTES = 6
+CARTE_MIN_VENTES = 10
 
 
 def _dp(pts, eps):
@@ -328,8 +328,8 @@ def build_carte(ventes, end_mi):
     px = {}
     for v in ventes:
         mi = (v['date'].year - 2000) * 12 + v['date'].month - 1
-        if mi > end_mi - 24 and v['surf'] > 0:
-            px.setdefault(v['code'], {}).setdefault(v['kind'], {'cur': [], 'prev': []})['cur' if mi > end_mi - 12 else 'prev'].append(v['prix'] / v['surf'])
+        if mi > end_mi - 36 and v['surf'] > 0:
+            px.setdefault(v['code'], {}).setdefault(v['kind'], []).append((end_mi - mi, v['prix'] / v['surf']))
     kx = math.cos(math.radians(43.65))
     sel = []
     for f in feats:
@@ -365,13 +365,23 @@ def build_carte(ventes, end_mi):
     return {'fin_mi': end_mi, 'w': 1000, 'h': H, 'lb': 50, 'c': communes}
 
 
-def _stat(d):
-    """[nb de ventes sur 12 mois, médiane €/m² (0 si < 6 ventes), évolution % vs 12 mois précédents (None si < 8 ventes par période)]"""
-    d = d or {'cur': [], 'prev': []}
-    cur, prev = d['cur'], d['prev']
-    pm = round(statistics.median(cur)) if len(cur) >= CARTE_MIN_VENTES else 0
-    ev = round((statistics.median(cur) / statistics.median(prev) - 1) * 100, 1) if len(cur) >= 8 and len(prev) >= 8 else None
-    return [len(cur), pm, ev]
+def _stat(lst):
+    """[nb de ventes, médiane €/m² (0 si < 10 ventes même sur 36 mois), évolution % vs 12 mois précédents (None si < 10 ventes par période), fenêtre en mois (12, 24 ou 36)].
+    lst : [(ancienneté en mois, €/m²)]. La fenêtre s'élargit tant qu'il y a moins de 10 ventes."""
+    lst = lst or []
+
+    def sel(a, b):
+        return [v for age, v in lst if a <= age < b]
+    pm, w, n = 0, 12, 0
+    for w in (12, 24, 36):
+        c = sel(0, w)
+        n = len(c)
+        if n >= CARTE_MIN_VENTES:
+            pm = round(statistics.median(c))
+            break
+    cur, prev = sel(0, 12), sel(12, 24)
+    ev = round((statistics.median(cur) / statistics.median(prev) - 1) * 100, 1) if len(cur) >= CARTE_MIN_VENTES and len(prev) >= CARTE_MIN_VENTES else None
+    return [n, pm, ev, w]
 
 
 QUARTIERS_URL = 'https://data.montpellier3m.fr/sites/default/files/ressources/VilleMTP_MTP_SousQuartiers.json'
@@ -414,11 +424,11 @@ def build_quartiers(ventes, end_mi):
         if v['code'] != '34172' or not v['lat'] or not v['lon'] or v['surf'] <= 0:
             continue
         mi = (v['date'].year - 2000) * 12 + v['date'].month - 1
-        if mi <= end_mi - 24:
+        if mi <= end_mi - 36:
             continue
         for i, (f, polys, bb) in enumerate(items):
             if bb[0] <= v['lon'] <= bb[2] and bb[1] <= v['lat'] <= bb[3] and any(_inside(v['lon'], v['lat'], poly[0]) for poly in polys):
-                px[i].setdefault(v['kind'], {'cur': [], 'prev': []})['cur' if mi > end_mi - 12 else 'prev'].append(v['prix'] / v['surf'])
+                px[i].setdefault(v['kind'], []).append((end_mi - mi, v['prix'] / v['surf']))
                 break
     kx = math.cos(math.radians(43.61))
     allx = [q[0] * kx for _, polys, _ in items for poly in polys for q in poly[0]]
