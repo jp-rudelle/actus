@@ -484,6 +484,8 @@ def main():
 
     OUT.mkdir(exist_ok=True)
     (OUT / '.nojekyll').write_text('', encoding='utf-8')
+    if cfg.get('domaine'):
+        (OUT / 'CNAME').write_text(cfg['domaine'].strip() + '\n', encoding='utf-8')
     for v in communes:
         data = par.get(slugify(v), {'m': [], 'a': []})
         d = OUT / slugify(v)
