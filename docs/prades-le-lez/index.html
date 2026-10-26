@@ -68,6 +68,9 @@ function clamp(v,a,b){return isFinite(v)?Math.min(b,Math.max(a,v)):0;}
 function $(id){return document.getElementById(id);}
 function el(tag,txt,cls){var e=document.createElement(tag);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e;}
 var P=new URLSearchParams(location.search);
+/* lien lisible : #maison-120m2, #t3-65m2, #appartement (l'ancien format ?t=a&p=3&s=65 reste valable) */
+var H=(location.hash||'').toLowerCase().match(/^#(maison|appartement|t([1-5]))(?:-(\d{2,3})m2)?$/);
+if(H){P.set('t',H[1]==='maison'?'m':'a');if(H[2])P.set('p',H[2]);if(H[3])P.set('s',H[3]);}
 var st={t:P.get('t')==='a'?'a':P.get('t')==='m'?'m':'',p:clamp(parseInt(P.get('p'),10),1,5),s:clamp(parseInt(P.get('s'),10),9,500),h:12};
 if(!st.t){st.t=D.a.length>D.m.length?'a':'m';}
 var NOM={m:'maisons',a:'appartements'};
