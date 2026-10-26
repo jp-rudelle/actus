@@ -50,14 +50,14 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 <h2 id="qh" style="display:none">Montpellier : prix par quartier</h2>
 <div class="card" id="qcard" style="display:none"><div class="chips" id="qtypes"></div><div class="chips" id="qmode"></div><p class="trend" id="qinfo"></p><div id="qmap" class="gmap"></div>
 <div class="leg"><span id="qmin"></span><i></i><span id="qmax"></span></div>
-<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Gris : moins de 8 ventes sur 12 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.</p></div>
+<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Gris : moins de 8 ventes sur 12 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.<span id="qfin"></span></p></div>
 <div class="agent" data-sec="contact"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
 <strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc<br><a class="tel" href="tel:0618455175">📞 06 18 45 51 75</a>
 <p class="legal">Page mise à jour le 26/10/2026. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
 </main>
 <script>
 (function(){
-var D={"m":[[300,123,470250,5],[300,105,260000,5],[304,88,374300,4],[305,80,350350,3],[305,97,386050,4],[305,76,301300,3],[306,120,265000,4],[308,60,211000,3],[309,88,305000,4],[309,97,294401,4],[309,106,397050,4],[311,120,645000,6],[311,110,240000,4],[292,90,355000,4],[292,130,426000,6],[293,81,307170,4],[293,135,497450,5],[294,79,160000,4],[294,100,360900,5],[295,90,362000,4],[295,100,422150,4],[296,114,529540,4],[297,100,330000,4],[297,67,262050,4],[299,80,372000,4],[276,97,398150,4],[277,120,507550,5],[276,144,541150,4],[277,88,414000,4],[277,151,483080,4],[278,100,403300,4],[278,108,218000,6],[279,85,400690,4],[278,114,522500,4],[279,100,210000,4],[279,94,424089,4],[281,84,229000,5],[281,76,191000,3],[281,104,364250,5],[285,132,463500,4],[285,140,401000,5],[285,75,322623,4],[285,135,539314,5],[285,97,418650,4],[286,136,790594,4],[287,88,360000,3],[287,114,455420,5],[287,121,520000,6]],"a":[[300,61,284126,3],[300,71,263660,3],[303,71,250600,3],[305,50,146750,3],[305,48,202150,2],[308,43,185000,2],[293,42,193600,2],[295,71,246980,3],[299,72,258403,3],[277,75,220000,3],[278,47,180630,2],[281,32,117241,2],[284,74,284600,4],[285,61,267126,3]]}, END=311, VILLE="Restinclières", SLUG="restinclieres", CARTE=null, CALC={"pct": 3.6, "annees": 20, "date": "12/10/2026"};
+var D={"m":[[300,123,470250,5],[300,105,260000,5],[304,88,374300,4],[305,80,350350,3],[305,97,386050,4],[305,76,301300,3],[306,120,265000,4],[308,60,211000,3],[309,88,305000,4],[309,97,294401,4],[309,106,397050,4],[311,120,645000,6],[311,110,240000,4],[292,90,355000,4],[292,130,426000,6],[293,81,307170,4],[293,135,497450,5],[294,79,160000,4],[294,100,360900,5],[295,90,362000,4],[295,100,422150,4],[296,114,529540,4],[297,100,330000,4],[297,67,262050,4],[299,80,372000,4],[285,132,463500,4],[285,140,401000,5],[285,75,322623,4],[285,135,539314,5],[285,97,418650,4],[286,136,790594,4],[287,88,360000,3],[287,114,455420,5],[287,121,520000,6],[313,87,396800,4],[312,170,619200,6],[315,115,347500,5],[314,72,290400,4],[316,94,344511,4]],"a":[[300,61,284126,3],[300,71,263660,3],[303,71,250600,3],[305,50,146750,3],[305,48,202150,2],[308,43,185000,2],[293,42,193600,2],[295,71,246980,3],[299,72,258403,3],[284,74,284600,4],[285,61,267126,3],[314,129,340150,5]]}, END=317, VILLE="Restinclières", SLUG="restinclieres", CARTE=null, CALC={"pct": 3.6, "annees": 20, "date": "12/10/2026"};
 var MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 function lab(mi){return MOIS[mi%12]+' '+(2000+Math.floor(mi/12));}
 function fr(x){return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
@@ -231,6 +231,7 @@ function paintMap(P,data,curSlug){
   chips($(P+'mode'),[['p','Prix au m²'],['e','Évolution sur 1 an']],MODE,function(v){MODE=v;drawMap();});
   var vals=data.c.filter(function(c){var d=c[k];return idx===1?d[1]>0:d[2]!==null}).map(function(c){return c[k][idx]});
   $(P+'info').textContent='';
+  if(P==='q'&&$('qfin'))$('qfin').textContent=' Données localisées jusqu\u2019en '+lab(data.fin_mi)+'.';
   if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner cette carte.','meta'));$(P+'min').textContent='';$(P+'max').textContent='';return;}
   var lo,hi;
   if(idx===1){lo=q(vals,.08);hi=q(vals,.92);}

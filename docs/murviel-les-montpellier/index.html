@@ -50,14 +50,14 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 <h2 id="qh" style="display:none">Montpellier : prix par quartier</h2>
 <div class="card" id="qcard" style="display:none"><div class="chips" id="qtypes"></div><div class="chips" id="qmode"></div><p class="trend" id="qinfo"></p><div id="qmap" class="gmap"></div>
 <div class="leg"><span id="qmin"></span><i></i><span id="qmax"></span></div>
-<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Gris : moins de 8 ventes sur 12 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.</p></div>
+<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Gris : moins de 8 ventes sur 12 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.<span id="qfin"></span></p></div>
 <div class="agent" data-sec="contact"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
 <strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc<br><a class="tel" href="tel:0618455175">📞 06 18 45 51 75</a>
 <p class="legal">Page mise à jour le 26/10/2026. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
 </main>
 <script>
 (function(){
-var D={"m":[[300,101,176000,5],[302,91,338646,4],[302,105,398800,5],[302,145,203047,5],[303,159,592000,5],[305,83,374000,4],[306,81,360000,4],[306,73,265000,3],[307,95,414500,4],[307,95,205700,2],[308,128,512500,6],[308,78,298320,3],[309,133,476500,4],[309,90,341430,4],[310,90,375200,4],[311,50,105000,3],[289,69,162175,3],[289,118,362170,4],[291,84,157500,4],[292,154,640000,5],[292,88,279550,4],[292,220,950000,4],[294,143,491000,4],[276,94,335000,4],[276,76,380000,3],[278,188,532760,6],[279,81,346650,4],[281,180,416620,6],[282,118,247170,4],[281,107,405000,4],[282,86,270000,3],[282,130,555115,5],[284,72,362000,3],[286,96,388000,5],[287,61,230100,3],[286,89,450850,3]],"a":[[300,65,205000,3],[301,39,120000,2],[288,55,198000,2],[276,51,150000,3],[281,85,255000,3]]}, END=311, VILLE="Murviel-lès-Montpellier", SLUG="murviel-les-montpellier", CARTE=null, CALC={"pct": 3.6, "annees": 20, "date": "12/10/2026"};
+var D={"m":[[300,101,176000,5],[302,91,338646,4],[302,105,398800,5],[302,145,203047,5],[303,159,592000,5],[305,83,374000,4],[306,81,360000,4],[306,73,265000,3],[307,95,414500,4],[307,95,205700,2],[308,128,512500,6],[308,78,298320,3],[309,133,476500,4],[309,90,341430,4],[310,90,375200,4],[311,50,105000,3],[289,69,162175,3],[289,118,362170,4],[291,84,157500,4],[292,154,640000,5],[292,88,279550,4],[292,220,950000,4],[294,143,491000,4],[282,118,247170,4],[282,86,270000,3],[282,130,555115,5],[284,72,362000,3],[286,96,388000,5],[287,61,230100,3],[286,89,450850,3],[312,83,303500,4],[312,80,198500,4],[312,74,214250,3],[313,81,361000,4],[313,68,188500,3],[314,99,364600,4],[313,80,175000,3],[314,72,330000,3],[315,107,368600,3],[316,95,350000,4]],"a":[[300,65,205000,3],[301,39,120000,2],[288,55,198000,2]]}, END=317, VILLE="Murviel-lès-Montpellier", SLUG="murviel-les-montpellier", CARTE=null, CALC={"pct": 3.6, "annees": 20, "date": "12/10/2026"};
 var MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 function lab(mi){return MOIS[mi%12]+' '+(2000+Math.floor(mi/12));}
 function fr(x){return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
@@ -231,6 +231,7 @@ function paintMap(P,data,curSlug){
   chips($(P+'mode'),[['p','Prix au m²'],['e','Évolution sur 1 an']],MODE,function(v){MODE=v;drawMap();});
   var vals=data.c.filter(function(c){var d=c[k];return idx===1?d[1]>0:d[2]!==null}).map(function(c){return c[k][idx]});
   $(P+'info').textContent='';
+  if(P==='q'&&$('qfin'))$('qfin').textContent=' Données localisées jusqu\u2019en '+lab(data.fin_mi)+'.';
   if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner cette carte.','meta'));$(P+'min').textContent='';$(P+'max').textContent='';return;}
   var lo,hi;
   if(idx===1){lo=q(vals,.08);hi=q(vals,.92);}

@@ -19,6 +19,8 @@ import statistics
 import csv
 import gzip
 import html
+import io
+import zipfile
 import json
 import re
 import shutil
@@ -76,9 +78,83 @@ def dvf_files(refresh):
                     continue
                 print('DVF %d : téléchargement impossible (%s), copie locale utilisée' % (year, e))
         files.append(p)
+    y = date.today().year
+    if not (DVF_DIR / ('34_%d.csv.gz' % y)).exists():
+        b = dvf_brut(y, refresh)
+        if b:
+            files.append(b)
     if not files:
         sys.exit('Aucun fichier DVF disponible.')
     return files
+
+
+DATASET_API = 'https://www.data.gouv.fr/api/1/datasets/5c4ae55a634f4117716d5656/'
+BRUT_COLS = ['id_mutation', 'date_mutation', 'nature_mutation', 'valeur_fonciere', 'code_commune', 'nom_commune', 'id_parcelle',
+             'type_local', 'surface_reelle_bati', 'nombre_pieces_principales', 'code_nature_culture', 'surface_terrain', 'latitude', 'longitude']
+
+
+def convert_brut(zip_path, writer):
+    """Fichier officiel DGFiP (séparateur |, virgule décimale, sans identifiant de mutation ni coordonnées) -> colonnes geo-dvf, département 34."""
+    n = 0
+    with zipfile.ZipFile(zip_path) as z, z.open(z.namelist()[0]) as raw:
+        rd = csv.reader(io.TextIOWrapper(raw, encoding='utf-8', errors='replace', newline=''), delimiter='|', quoting=csv.QUOTE_NONE)
+        h = next(rd)
+        ix = {name: i for i, name in enumerate(h)}
+        need = ['Code departement', 'Code commune', 'Date mutation', 'Nature mutation', 'Valeur fonciere', 'Type local',
+                'Surface reelle bati', 'Nombre pieces principales', 'Surface terrain', 'Commune', 'No disposition']
+        miss = [c for c in need if c not in ix]
+        if miss:
+            raise ValueError('colonnes absentes du fichier officiel : %s' % miss)
+
+        def g(r, c):
+            return r[ix[c]].strip() if ix[c] < len(r) else ''
+        for r in rd:
+            if g(r, 'Code departement') != '34':
+                continue
+            try:
+                d, m, y = g(r, 'Date mutation').split('/')
+            except ValueError:
+                continue
+            iso = '%s-%s-%s' % (y, m, d)
+            val = g(r, 'Valeur fonciere').replace(',', '.')
+            code = '34' + g(r, 'Code commune').zfill(3)
+            parc = code + g(r, 'Prefixe de section') + g(r, 'Section') + g(r, 'No plan')
+            writer.writerow(['|'.join([iso, val, code, g(r, 'No disposition')]), iso, g(r, 'Nature mutation'), val, code, g(r, 'Commune'), parc,
+                             g(r, 'Type local'), g(r, 'Surface reelle bati').replace(',', '.'), g(r, 'Nombre pieces principales'),
+                             g(r, 'Nature culture'), g(r, 'Surface terrain').replace(',', '.'), '', ''])
+            n += 1
+    return n
+
+
+def dvf_brut(year, refresh):
+    """Secours quand Etalab (geo-dvf) n'a pas encore publié l'année : fichier officiel data.gouv.fr converti. Sans coordonnées."""
+    out = DVF_DIR / ('34_%d_brut.csv.gz' % year)
+    if not refresh and out.exists() and time.time() - out.stat().st_mtime < 5 * 86400:
+        return out
+    try:
+        req = urllib.request.Request(DATASET_API, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            info = json.loads(r.read().decode('utf-8'))
+        urls = [x['url'] for x in info['resources'] if re.search(r'Valeurs fonci.res %d\b' % year, x.get('title', '')) and x['url'].endswith('.zip')]
+        if not urls:
+            return out if out.exists() else None
+        tmp = DVF_DIR / ('34_%d_brut.tmp.gz' % year)
+        total = 0
+        with gzip.open(tmp, 'wt', encoding='utf-8', newline='') as gz:
+            w = csv.writer(gz)
+            w.writerow(BRUT_COLS)
+            for u in urls:
+                zp = DVF_DIR / 'brut_tmp.zip'
+                with urllib.request.urlopen(urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0'}), timeout=300) as r:
+                    zp.write_bytes(r.read())
+                total += convert_brut(zp, w)
+                zp.unlink()
+        tmp.replace(out)
+        print('DVF %d : fichier officiel DGFiP converti (%d lignes, sans coordonnées)' % (year, total), flush=True)
+        return out
+    except Exception as e:
+        print('DVF %d officiel : indisponible (%s)' % (year, e))
+        return out if out.exists() else None
 
 
 def num(x):
@@ -409,7 +485,8 @@ def main():
     if carte:
         (OUT / 'carte.json').write_text(json.dumps(carte, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
         print('carte.json : %d communes' % len(carte['c']))
-    quart = build_quartiers(ventes, end_mi)
+    end_q = max([(v['date'].year - 2000) * 12 + v['date'].month - 1 for v in ventes if v['lat']] or [end_mi])
+    quart = build_quartiers(ventes, end_q)
     if quart:
         (OUT / 'quartiers.json').write_text(json.dumps(quart, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
         print('quartiers.json : %d sous-quartiers' % len(quart['c']))
