@@ -275,7 +275,7 @@ def stats_for(data, end_mi):
 
 GEO_URL = 'https://geo.api.gouv.fr/departements/34/communes?fields=nom,code&format=geojson&geometry=contour'
 BBOX = (3.58, 43.44, 4.22, 43.83)   # Montpellier et alentours (lon min, lat min, lon max, lat max)
-CARTE_MIN_VENTES = 8
+CARTE_MIN_VENTES = 5
 
 
 def _dp(pts, eps):
@@ -366,11 +366,11 @@ def build_carte(ventes, end_mi):
 
 
 def _stat(d):
-    """[nb de ventes sur 12 mois, médiane €/m² (0 si < 8 ventes), évolution % vs 12 mois précédents (None si < 10 ventes)]"""
+    """[nb de ventes sur 12 mois, médiane €/m² (0 si < 5 ventes), évolution % vs 12 mois précédents (None si < 8 ventes par période)]"""
     d = d or {'cur': [], 'prev': []}
     cur, prev = d['cur'], d['prev']
     pm = round(statistics.median(cur)) if len(cur) >= CARTE_MIN_VENTES else 0
-    ev = round((statistics.median(cur) / statistics.median(prev) - 1) * 100, 1) if len(cur) >= 10 and len(prev) >= 10 else None
+    ev = round((statistics.median(cur) / statistics.median(prev) - 1) * 100, 1) if len(cur) >= 8 and len(prev) >= 8 else None
     return [len(cur), pm, ev]
 
 
