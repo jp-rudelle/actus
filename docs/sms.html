@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>SMS</title>
+<style>
+  body{font:600 22px -apple-system,sans-serif;margin:0;display:flex;min-height:100vh;align-items:center;justify-content:center;background:#f2f2f7}
+  a{background:#0a84ff;color:#fff;padding:22px 34px;border-radius:16px;text-decoration:none}
+</style>
+</head>
+<body>
+<a id="go" href="#">Ouvrir Messages</a>
+<script>
+// Donnees dans le fragment (#) : jamais envoyees au serveur.
+const p = new URLSearchParams(location.hash.slice(1));
+const n = (p.get('n') || '').replace(/[^+\d]/g, '');
+const b = p.get('b') || '';
+const u = 'sms:' + n + '&body=' + encodeURIComponent(b);
+document.getElementById('go').href = u;
+if (n) location.href = u;   // iOS peut bloquer : le bouton sert de secours
+</script>
+</body>
+</html>
