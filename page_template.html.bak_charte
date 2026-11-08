@@ -1,0 +1,289 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Prix de vente à __VILLE__</title>
+<style>
+:root{--v:#2E7D32;--t:#1f2a24;--m:#667;--b:#e4e8e5;--bg:#f6f8f6;--c:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:16px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+main{max-width:660px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:23px;line-height:1.25;margin:8px 0 4px}h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--v);margin:26px 0 10px}
+.sub{color:var(--m);margin:0 0 10px;font-size:14px}
+.card{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:14px 16px;margin:0 0 10px}
+.card h3{font-size:16px;margin:0 0 4px;line-height:1.35}.card p{margin:4px 0;font-size:14.5px}
+.meta{color:var(--m);font-size:12.5px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.chip{border:1px solid var(--b);background:var(--c);color:var(--t);border-radius:18px;padding:6px 12px;font:inherit;font-size:13.5px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--v);border-color:var(--v);color:#fff}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
+.kpi{flex:1 1 105px;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:12px 14px}
+.kpi b{display:block;font-size:19px;line-height:1.2}.kpi span{color:var(--m);font-size:12.5px}
+.trend{font-weight:600;margin:2px 0 8px;font-size:15px}
+.gmap path{stroke:var(--c);stroke-width:1.2;cursor:pointer;transition:opacity .15s}#map path:hover{opacity:.8}
+.leg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--m);margin:6px 0}.leg i{flex:1;height:10px;border-radius:5px;background:linear-gradient(90deg,hsl(125 55% 46%),hsl(62 60% 50%),hsl(0 62% 48%))}
+svg{width:100%;height:auto;display:block}
+.ax{fill:var(--m);font-size:12.5px}.gr{stroke:var(--b);stroke-width:1}
+ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px solid var(--b);font-size:14.5px}
+.agent{margin-top:30px;padding-top:16px;border-top:1px solid var(--b);font-size:14.5px}
+.agent a.tel{display:inline-block;margin-top:6px;background:var(--v);color:#fff;text-decoration:none;padding:10px 18px;border-radius:24px;font-weight:600}
+.legal{color:var(--m);font-size:12px;margin-top:16px}
+@media (prefers-color-scheme:dark){:root{--t:#e8eee9;--m:#9aa8a0;--b:#2c3a32;--bg:#121a15;--c:#1a251e;--v:#4caf50}}
+.cap p{margin:6px 0}
+</style>__COMPTEUR__</head><body><main>
+<h1 id="titre">Prix de vente à __VILLE__</h1>
+<p class="sub" id="sous">Taux de crédit et ventes réelles enregistrées (DVF)</p>
+__TAUX__
+<div class="chips" id="types"></div>
+<div class="chips" id="pieces"></div>
+<div class="card"><p id="desc"></p></div>
+<div class="kpis" id="kpis"></div>
+<div class="card"><h3 id="ctitre">Prix au m² : évolution</h3>
+<div class="chips" id="horiz"></div>
+<p class="trend" id="trend"></p><div id="chart"></div><p class="meta" id="cmeta"></p></div>
+<h2>Dernières ventes comparables</h2>
+<div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
+<div id="capw" style="display:none"><h2>Qui peut acheter un bien comme le vôtre ?</h2>
+<div class="card cap" data-sec="capacite"><p class="meta">Mensualité qu'un acheteur peut consacrer à son crédit :</p><div class="chips" id="capm"></div><p id="cap1"></p><p id="cap2"></p><p id="cap3"></p><p class="meta" id="capn"></p></div></div>
+<h2>Carte des prix autour de Montpellier</h2>
+<div class="card" data-sec="carte"><div class="chips" id="ctypes"></div><div class="chips" id="cmode"></div><p class="trend" id="cinfo"></p><div id="cmap" class="gmap"></div>
+<div class="leg"><span id="cmin"></span><i></i><span id="cmax"></span></div>
+<p class="meta">Prix médian au m² sur 12 mois, par commune ; s'il y a moins de 10 ventes, la période est élargie à 24 puis 36 mois (vert : moins cher, rouge : plus cher ; hachuré : prix calculé sur 24 ou 36 mois ; pointillé : moins de 10 ventes enregistrées, prix estimé à partir de sites immobiliers tiers et donc indicatif). Touchez une commune pour le détail. Moyenne communale : l'écart entre quartiers peut être important.</p></div>
+<h2 id="qh" style="display:none">Montpellier : prix par quartier</h2>
+<div class="card" id="qcard" style="display:none"><div class="chips" id="qtypes"></div><div class="chips" id="qmode"></div><p class="trend" id="qinfo"></p><div id="qmap" class="gmap"></div>
+<div class="leg"><span id="qmin"></span><i></i><span id="qmax"></span></div>
+<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Prix sur 12 mois, élargi à 24 puis 36 mois s'il y a moins de 10 ventes ; hachuré : période élargie ; gris : moins de 10 ventes en 36 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.<span id="qfin"></span></p></div>
+<div class="agent" data-sec="contact"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
+__AGENT__
+<p class="legal">Page mise à jour le __DATE__. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
+</main>
+<script>
+(function(){
+var D=__DATA__, END=__END__, VILLE=__VILLEJS__, SLUG=__SLUGJS__, CARTE=null, CALC=__CALC__;
+var MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+function lab(mi){return MOIS[mi%12]+' '+(2000+Math.floor(mi/12));}
+function fr(x){return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+function eur(x,r){return fr(Math.round(x/r)*r)+' €';}
+function med(a){a=a.slice().sort(function(x,y){return x-y});var n=a.length;return n?(n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2):NaN;}
+function q(a,p){a=a.slice().sort(function(x,y){return x-y});if(!a.length)return NaN;var i=(a.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo);}
+function clamp(v,a,b){return isFinite(v)?Math.min(b,Math.max(a,v)):0;}
+function $(id){return document.getElementById(id);}
+function el(tag,txt,cls){var e=document.createElement(tag);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e;}
+var P=new URLSearchParams(location.search);
+/* lien lisible : #maison-120m2, #t3-65m2, #appartement (l'ancien format ?t=a&p=3&s=65 reste valable) */
+var H=(location.hash||'').toLowerCase().match(/^#(maison|appartement|t([1-5]))(?:-(\d{2,3})m2)?$/);
+if(H){P.set('t',H[1]==='maison'?'m':'a');if(H[2])P.set('p',H[2]);if(H[3])P.set('s',H[3]);}
+var st={t:P.get('t')==='a'?'a':P.get('t')==='m'?'m':'',p:clamp(parseInt(P.get('p'),10),1,5),s:clamp(parseInt(P.get('s'),10),9,500),h:12};
+if(!st.t){st.t=D.a.length>D.m.length?'a':'m';}
+var NOM={m:'maisons',a:'appartements'};
+function sel(type,rooms,tol){
+  var cut=END-11,s=st.s;
+  return D[type].filter(function(v){
+    if(rooms&&type==='a'){if(rooms>=5?v[3]<5:v[3]!==rooms)return false;}
+    if(tol&&s){var d=Math.max(8,s*tol);if(Math.abs(v[1]-s)>d)return false;}
+    return true;
+  });
+}
+function choose(){
+  var steps=[],r=(st.t==='a'&&st.p)?st.p:0,s=st.s;
+  if(s){steps.push([r,0.2]);steps.push([r,0.3]);}
+  if(r)steps.push([r,0]);
+  steps.push([0,s?0.3:0]);steps.push([0,0]);
+  var best=null;
+  for(var i=0;i<steps.length;i++){
+    var rr=steps[i][0],tol=steps[i][1],all=sel(st.t,rr,tol);
+    var n12=all.filter(function(v){return v[0]>END-12}).length;
+    best={all:all,rooms:rr,tol:tol,n12:n12};
+    if(n12>=8)break;
+  }
+  return best;
+}
+function describe(c){
+  var w=NOM[st.t];
+  if(st.t==='a'&&c.rooms)w=(c.rooms>=5?'T5 et plus':'T'+c.rooms);
+  if(c.tol&&st.s){var d=Math.max(8,st.s*c.tol);w+=' de '+Math.max(9,Math.round(st.s-d))+' à '+Math.round(st.s+d)+' m²';}
+  return w;
+}
+function track(n,r){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:n,title:VILLE,event:true});else if(!r)setTimeout(function(){track(n,1);},2000);}catch(e){}}
+function chips(box,items,cur,fn){box.textContent='';items.forEach(function(it){var b=el('button',it[1],'chip');b.type='button';b.setAttribute('aria-pressed',String(it[0]===cur));b.onclick=function(){track('clic-'+box.id);fn(it[0]);};box.appendChild(b);});}
+function windows(all,n,win){
+  var out=[];
+  for(var t=END-n+1;t<=END;t++){
+    var w=all.filter(function(v){return v[0]>t-win&&v[0]<=t}).map(function(v){return v[2]/v[1]});
+    out.push(w.length>=5?{t:t,m:med(w),a:q(w,.25),b:q(w,.75),n:w.length}:{t:t,n:w.length});
+  }
+  return out;
+}
+function smooth(pts){
+  /* moyenne mobile centrée sur 3 points valides contigus */
+  return pts.map(function(p,i){
+    if(!p.m)return p;
+    var s={m:0,a:0,b:0},c=0;
+    for(var j=i-1;j<=i+1;j++){var x=pts[j];if(x&&x.m){s.m+=x.m;s.a+=x.a;s.b+=x.b;c++;}}
+    return {t:p.t,n:p.n,m:s.m/c,a:s.a/c,b:s.b/c};
+  });
+}
+function trend(ok){
+  /* régression linéaire des médianes lissées : pente en % par an */
+  var n=ok.length,sx=0,sy=0,sxx=0,sxy=0;
+  ok.forEach(function(p){sx+=p.t;sy+=p.m;sxx+=p.t*p.t;sxy+=p.t*p.m;});
+  var d=n*sxx-sx*sx;if(!d)return null;
+  var slope=(n*sxy-sx*sy)/d,icpt=(sy-slope*sx)/n;
+  return {slope:slope,icpt:icpt,pct:slope*12/(sy/n)*100};
+}
+function curve(pts){
+  /* courbe de Catmull-Rom -> Bézier (tension réduite pour éviter les dépassements) */
+  if(pts.length<2)return '';
+  var d='M'+pts[0][0]+','+pts[0][1];
+  for(var i=0;i<pts.length-1;i++){
+    var p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2,k=0.16;
+    d+=' C'+(p1[0]+(p2[0]-p0[0])*k)+','+(p1[1]+(p2[1]-p0[1])*k)+' '+(p2[0]-(p3[0]-p1[0])*k)+','+(p2[1]-(p3[1]-p1[1])*k)+' '+p2[0]+','+p2[1];
+  }
+  return d;
+}
+function draw(pts,tr){
+  var box=$('chart');box.textContent='';
+  var ok=pts.filter(function(p){return p.m});
+  if(ok.length<3){box.appendChild(el('p','Pas assez de ventes comparables pour tracer une courbe fiable sur cette période.','meta'));return;}
+  var W=460,H=260,L=54,R=12,T=14,B=28,ns='http://www.w3.org/2000/svg';
+  var lo=Math.min.apply(null,ok.map(function(p){return p.a})),hi=Math.max.apply(null,ok.map(function(p){return p.b}));
+  var step=hi-lo>2500?500:hi-lo>1200?250:100;
+  lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
+  var N=pts.length;
+  function X(i){return L+(W-L-R)*(N>1?i/(N-1):0.5);}
+  function Y(v){return T+(H-T-B)*(1-(v-lo)/(hi-lo||1));}
+  function mk(n,a){var e=document.createElementNS(ns,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  var svg=mk('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Courbe du prix au mètre carré'});
+  var ticks=Math.round((hi-lo)/step),every=Math.max(1,Math.ceil(ticks/5));
+  for(var g=0;g<=ticks;g+=every){var v=lo+g*step,y=Y(v);
+    svg.appendChild(mk('line',{x1:L,x2:W-R,y1:y,y2:y,'class':'gr'}));
+    var tx=mk('text',{x:L-6,y:y+4,'text-anchor':'end','class':'ax'});tx.textContent=fr(v);svg.appendChild(tx);}
+  [0,Math.floor((N-1)/2),N-1].forEach(function(i,k){var tx=mk('text',{x:X(i),y:H-8,'text-anchor':k===0?'start':k===2?'end':'middle','class':'ax'});tx.textContent=lab(pts[i].t);svg.appendChild(tx);});
+  var run=[],runs=[];
+  pts.forEach(function(p,i){if(p.m){run.push([i,p]);}else if(run.length){runs.push(run);run=[];}});
+  if(run.length)runs.push(run);
+  runs.forEach(function(r){
+    if(r.length>1){
+      var up=r.map(function(a){return [X(a[0]),Y(a[1].b)]}),dn=r.slice().reverse().map(function(a){return [X(a[0]),Y(a[1].a)]});
+      svg.appendChild(mk('path',{d:curve(up)+' L'+dn[0][0]+','+dn[0][1]+' '+curve(dn).replace(/^M[^C]*/,'')+' Z',fill:'var(--v)','fill-opacity':'.13'}));
+      svg.appendChild(mk('path',{d:curve(r.map(function(a){return [X(a[0]),Y(a[1].m)]})),fill:'none',stroke:'var(--v)','stroke-width':'2.8','stroke-linecap':'round'}));
+    } else {
+      svg.appendChild(mk('circle',{cx:X(r[0][0]),cy:Y(r[0][1].m),r:4,fill:'var(--v)'}));
+    }
+  });
+  if(tr){
+    var y1=tr.icpt+tr.slope*ok[0].t,y2=tr.icpt+tr.slope*ok[ok.length-1].t;
+    svg.appendChild(mk('line',{x1:X(pts.indexOf(ok[0])),y1:Y(y1),x2:X(pts.indexOf(ok[ok.length-1])),y2:Y(y2),stroke:'var(--t)','stroke-width':'1.6','stroke-dasharray':'5 4',opacity:'.7'}));
+  }
+  box.appendChild(svg);
+  var first=ok[0],last=ok[ok.length-1];
+  $('cmeta').textContent='Trait vert : prix médian au m² lissé ('+lab(first.t)+' à '+lab(last.t)+') ; zone claire : la moitié centrale des ventes ; pointillé : tendance. Chaque point repose sur au moins 5 ventes ; la courbe est lissée sur 3 mois et ne remplace pas une estimation.'; /* lissage2 */
+}
+function render(){
+  var c=choose(),what=describe(c);
+  $('titre').textContent='Prix de vente des '+what+' à '+VILLE;
+  chips($('types'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
+  if(st.t==='a')chips($('pieces'),[[0,'Tous'],[1,'T1'],[2,'T2'],[3,'T3'],[4,'T4'],[5,'T5+']],st.p,function(v){st.p=v;render();});else $('pieces').textContent='';
+  chips($('horiz'),[[12,'12 mois'],[24,'24 mois']],st.h,function(v){st.h=v;render();});
+  var cur=c.all.filter(function(v){return v[0]>END-12}),prev=c.all.filter(function(v){return v[0]<=END-12&&v[0]>END-24});
+  var desc=c.n12+' vente'+(c.n12>1?'s':'')+' '+(/^appart/.test(what)?'d’':'de ')+what+' à '+VILLE+' entre '+lab(END-11)+' et '+lab(END)+'.';
+  if(c.n12<8)desc+=' Échantillon réduit : à lire avec prudence.';
+  if(st.s&&!c.tol)desc+=' (Surface de votre bien non prise en compte faute de ventes comparables assez nombreuses.)';
+  $('desc').textContent=desc;
+  var k=$('kpis');k.textContent='';
+  if(cur.length){
+    var pm=cur.map(function(v){return v[2]/v[1]}),big=[['Prix médian',eur(med(cur.map(function(v){return v[2]})),1000)],['Médiane au m²',eur(med(pm),10)+'/m²']];
+    big.forEach(function(b){var d=el('div',null,'kpi');d.appendChild(el('b',b[1]));d.appendChild(el('span',b[0]));k.appendChild(d);});
+  }
+  var win=cur.length>=40?6:cur.length>=20?9:12;
+  var pts=smooth(windows(c.all,st.h,win)),ok=pts.filter(function(p){return p.m}),tr=null,tl=$('trend');
+  tl.textContent='';
+  if(ok.length>=6&&cur.length>=15){
+    tr=trend(ok);
+    if(tr){var pc=tr.pct,txt=Math.abs(pc)<1.5?'Tendance : prix stables ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an)':'Tendance : '+(pc>0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an';
+      tl.textContent=txt+' · médiane glissante sur '+win+' mois';}
+  } else {tl.textContent='Tendance non significative : trop peu de ventes comparables.';}
+  drawCap(cur.length>=5?med(cur.map(function(v){return v[2]})):0);
+  draw(pts,tr);
+  drawMap();
+  var ul=$('last');ul.textContent='';
+  c.all.slice().sort(function(a,b){return b[0]-a[0]||b[2]-a[2]}).slice(0,3).forEach(function(v){
+    var li=el('li',lab(v[0])+' · '+v[1]+' m²'+(v[3]?' · '+v[3]+' pièce'+(v[3]>1?'s':''):'')+' · ');li.appendChild(el('b',eur(v[2],1000)));ul.appendChild(li);});
+  if(!ul.firstChild)ul.appendChild(el('li','Aucune vente comparable enregistrée.'));
+}
+var MENS=0,MENSUSER=false;
+function pmt(pct,yrs,K){var r=pct/1200,n=yrs*12;return K*r/(1-Math.pow(1+r,-n));}
+function borrow(pct,yrs,M){var r=pct/1200,n=yrs*12;return M*(1-Math.pow(1+r,-n))/r;}
+function drawCap(price){
+  var w=$('capw');
+  if(!CALC||!price){w.style.display='none';return;}
+  w.style.display='';
+  var need=pmt(CALC.pct,CALC.annees,price),opts=[1000,1500,2000,2500,3000,4000];
+  if(!MENSUSER){MENS=opts[opts.length-1];for(var i=0;i<opts.length;i++){if(opts[i]>=need){MENS=opts[i];break;}}}
+  chips($('capm'),opts.map(function(o){return [o,fr(o)+' €']}),MENS,function(v){MENS=v;MENSUSER=true;drawCap(price);});
+  var tx=String(CALC.pct).replace('.',','),cap=borrow(CALC.pct,CALC.annees,MENS),cap2=borrow(CALC.pct+.5,CALC.annees,MENS);
+  $('cap1').textContent='À '+fr(MENS)+' € par mois sur '+CALC.annees+' ans à '+tx+' %, un acheteur peut emprunter environ '+eur(cap,1000)+'.';
+  $('cap2').textContent='Pour acheter au prix médian des biens comparables ('+eur(price,1000)+'), sans apport, il faut environ '+fr(Math.round(need/10)*10)+' € de mensualité, soit des revenus nets d’environ '+eur(need/.35,100)+' par mois (35 % d’endettement maximum).';
+  $('cap3').textContent='À mensualité égale, une hausse de 0,5 point du taux retire environ '+eur(cap-cap2,1000)+' de budget à l’acheteur.';
+  $('capn').textContent='Simulation indicative : taux de '+tx+' % sur '+CALC.annees+' ans relevé le '+CALC.date+', hors assurance, frais de notaire et apport. Ce n’est pas une offre de prêt.';
+}
+var MODE='p',QUART=null,MAPK='m';
+function evolTxt(v){var r=Math.round(v*10)/10;return (r>0?'+':r<0?'−':'')+Math.abs(r).toFixed(1).replace('.',',')+' %';}
+function hue(u){u=Math.min(1,Math.max(0,u));return 'hsl('+Math.round(125*(1-u))+' '+(55+Math.round(7*u))+'% '+(46+Math.round(2*u))+'%)';}
+function paintMap(P,data,curSlug){
+  var k=MAPK,idx=MODE==='p'?1:2,box=$(P+'map'),ns='http://www.w3.org/2000/svg';box.textContent='';
+  chips($(P+'types'),[['m','Maisons'],['a','Appartements']],MAPK,function(v){MAPK=v;drawMap();});
+  chips($(P+'mode'),[['p','Prix au m²'],['e','Évolution sur 1 an']],MODE,function(v){MODE=v;drawMap();});
+  var vals=data.c.filter(function(c){var d=c[k];return idx===1?d[1]>0:d[2]!==null}).map(function(c){return c[k][idx]});
+  $(P+'info').textContent='';
+  if(P==='q'&&$('qfin'))$('qfin').textContent=' Données localisées jusqu\u2019en '+lab(data.fin_mi)+'.';
+  if(vals.length<4){box.appendChild(el('p','Pas assez de ventes pour dessiner cette carte.','meta'));$(P+'min').textContent='';$(P+'max').textContent='';return;}
+  var lo,hi;
+  if(idx===1){lo=q(vals,.08);hi=q(vals,.92);}
+  else{var L=Math.max(5,Math.min(15,Math.max(Math.abs(q(vals,.1)),Math.abs(q(vals,.9)))));lo=-L;hi=L;}
+  function has(c){var d=c[k];return idx===1?d[1]>0:d[2]!==null;}
+  function col(c){return has(c)?hue(hi>lo?(c[k][idx]-lo)/(hi-lo):.5):'#cfd6d1';}
+  function name(c){return c.n+(c.q&&c.q!==c.n?' ('+c.q+')':'');}
+  function txt(c){var d=c[k];
+    if(idx===1)if(d[4])return name(c)+' : environ '+eur(d[1],10)+'/m² (estimation indicative, '+((c.e&&c.e[k])||'source tierce')+' ; moins de 10 ventes enregistrées)';
+    return d[1]?name(c)+' : '+eur(d[1],10)+'/m² ('+d[0]+' vente'+(d[0]>1?'s':'')+' sur '+(d[3]||12)+' mois)'+(d[2]!==null?' · '+evolTxt(d[2])+' sur un an':''):name(c)+' : trop peu de ventes ('+d[0]+' en 36 mois) pour un prix fiable';
+    return d[2]!==null?name(c)+' : '+evolTxt(d[2])+' sur un an ('+eur(d[1],10)+'/m²)':name(c)+' : évolution non calculable (moins de 10 ventes par période)';}
+  var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 '+data.w+' '+data.h);svg.setAttribute('role','img');svg.setAttribute('aria-label','Carte');box.appendChild(svg);
+  var df=document.createElementNS(ns,'defs'),pt=document.createElementNS(ns,'pattern');pt.setAttribute('id','hat'+P);pt.setAttribute('width','9');pt.setAttribute('height','9');pt.setAttribute('patternUnits','userSpaceOnUse');pt.setAttribute('patternTransform','rotate(45)');
+  var ln=document.createElementNS(ns,'line');ln.setAttribute('x1','0');ln.setAttribute('y1','0');ln.setAttribute('x2','0');ln.setAttribute('y2','9');ln.setAttribute('stroke','rgba(0,0,0,.32)');ln.setAttribute('stroke-width','3');pt.appendChild(ln);df.appendChild(pt);
+  var pd=document.createElementNS(ns,'pattern');pd.setAttribute('id','dot'+P);pd.setAttribute('width','8');pd.setAttribute('height','8');pd.setAttribute('patternUnits','userSpaceOnUse');var cc=document.createElementNS(ns,'circle');cc.setAttribute('cx','4');cc.setAttribute('cy','4');cc.setAttribute('r','1.6');cc.setAttribute('fill','rgba(0,0,0,.30)');pd.appendChild(cc);df.appendChild(pd);svg.appendChild(df);
+  var cur=null,info=$(P+'info');
+  data.c.slice().sort(function(a,b){return (a.s===curSlug)-(b.s===curSlug)}).forEach(function(c){
+    var p=document.createElementNS(ns,'path');p.setAttribute('d',c.d);p.setAttribute('fill-rule','evenodd');p.setAttribute('fill',col(c));
+    if(c.s===curSlug){p.style.stroke='var(--t)';p.style.strokeWidth='5';cur=c;}
+    var tt=document.createElementNS(ns,'title');tt.textContent=txt(c);p.appendChild(tt);
+    p.addEventListener('click',function(){track('clic-commune');info.textContent=txt(c);});svg.appendChild(p);
+    if(idx===1&&c[k][4]){var h2=document.createElementNS(ns,'path');h2.setAttribute('d',c.d);h2.setAttribute('fill-rule','evenodd');h2.setAttribute('fill','url(#dot'+P+')');h2.style.pointerEvents='none';svg.appendChild(h2);}
+    if(idx===1&&c[k][1]&&c[k][3]>12){var h=document.createElementNS(ns,'path');h.setAttribute('d',c.d);h.setAttribute('fill-rule','evenodd');h.setAttribute('fill','url(#hat'+P+')');h.style.pointerEvents='none';svg.appendChild(h);}
+  });
+  function label(c,lines){
+    lines.forEach(function(l){var t=document.createElementNS(ns,'text');t.setAttribute('x',c.x);t.setAttribute('y',c.y+l[1]);t.setAttribute('text-anchor','middle');
+      t.setAttribute('style','font-size:'+l[2]+'px;font-weight:700;paint-order:stroke;stroke:var(--c);stroke-width:6px;fill:var(--t);pointer-events:none');t.textContent=l[0];svg.appendChild(t);});}
+  data.c.forEach(function(c){
+    if(c.s===curSlug||(curSlug&&c.s==='montpellier')||!has(c)||c.b[0]<data.lb||c.b[1]<data.lb*.7)return;
+    var v=idx===1?fr(Math.round(c[k][1]/10)*10):(Math.round(c[k][2])>0?'+':Math.round(c[k][2])<0?'−':'')+Math.abs(Math.round(c[k][2]))+' %';
+    label(c,data.nm?[[c.n,-6,17],[v,17,22]]:[[v,8,24]]);
+  });
+  if(cur)label(cur,[[cur.n,0,28]]);
+  if(curSlug!=='montpellier'){var mt=data.c.filter(function(c){return c.s==='montpellier'})[0];if(mt)label(mt,[[mt.n,0,28]]);}
+  $(P+'min').textContent=idx===1?eur(lo,10):evolTxt(lo);$(P+'max').textContent=idx===1?eur(hi,10)+'/m²':evolTxt(hi);
+  if(cur){info.textContent=txt(cur);
+    if(idx===1&&cur[k][1]){var below=vals.filter(function(v){return v<cur[k][1]}).length,share=Math.round(100*below/vals.length);
+      info.textContent+=' · '+(share>=50?'plus cher':'moins cher')+' que '+(share>=50?share:100-share)+' % des communes de la carte';}}
+}
+function drawMap(){
+  if(CARTE)paintMap('c',CARTE,SLUG);
+  if(QUART&&SLUG==='montpellier'){$('qh').style.display='';$('qcard').style.display='';paintMap('q',QUART,'');}
+}
+try{fetch('../carte.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){CARTE=j;drawMap();}}).catch(function(){});}catch(e){}
+try{if(SLUG==='montpellier')fetch('../quartiers.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){QUART=j;drawMap();}}).catch(function(){});}catch(e){}
+
+document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a.tel'))track('appel');});
+try{if('IntersectionObserver' in window){var seen={},io=new IntersectionObserver(function(es){es.forEach(function(x){var n=x.target.getAttribute('data-sec');if(x.isIntersecting&&!seen[n]){seen[n]=1;track('vu-'+n);}});},{threshold:.5});
+  Array.prototype.forEach.call(document.querySelectorAll('[data-sec]'),function(n){io.observe(n);});}}catch(e){}
+render();
+})();
+</script></body></html>
