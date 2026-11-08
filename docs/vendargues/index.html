@@ -1,7 +1,7 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Prix de vente à Vendargues</title>
+<title>Ce que valent les biens à Vendargues</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700;900&display=swap">
 <style>
 :root{--v:#52AE32;--f:#134721;--cl:#CBD7A8;--t:#1a1a1a;--m:#5f6b63;--b:#e1e6dc;--bg:#F6F6F6;--c:#fff}
@@ -35,21 +35,22 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 @media(max-width:700px){.bar{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--b);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:9}.bar .btn{flex:1;padding:12px 8px}body{padding-bottom:76px}}
 details.fold{margin:18px 0 10px}details.fold>summary{cursor:pointer;font-weight:900;color:var(--f);font-size:17px;padding:12px 16px;background:var(--c);border:1px solid var(--cl);border-radius:12px;list-style:none}details.fold>summary::-webkit-details-marker{display:none}details.fold>summary:after{content:' \25BE'}details[open].fold>summary:after{content:' \25B4'}details.fold[open]>summary{margin-bottom:10px}
 .kpi.w{flex:1 1 100%}
+.kpi.hero{flex:1 1 100%;background:var(--f);border-color:var(--f);padding:16px 18px}.kpi.hero b{color:#fff;font-size:40px;letter-spacing:-.03em;line-height:1.1}.kpi.hero span{color:var(--cl);font-size:14px}
+#sous{color:var(--f);font-size:18px;font-weight:600;line-height:1.35;margin:0 0 14px}
 .ag{display:flex;gap:14px;align-items:center;margin:12px 0}.ag img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid var(--cl)}.agent .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .ah{color:var(--f);font-size:22px;margin:0 0 6px;font-weight:900;letter-spacing:-.03em}
 </style><script data-goatcounter="https://jprudelle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script></head><body><header class="hd"><img src="../logo-efficity.png" alt="efficity" width="150" height="45"></header><main>
 <h1 id="titre">Prix de vente à Vendargues</h1>
-<p class="sub" id="sous">Taux de crédit et ventes réelles enregistrées (DVF)</p>
+<p class="sub" id="sous">Ventes réelles enregistrées (DVF)</p>
 <div class="cta"><a class="btn pri" id="cta1" data-cta="appel" href="tel:0618455175">Recevoir mon avis de valeur</a><a class="btn sec" id="cta2" data-cta="sms" href="#">Par SMS</a><p class="meta">Gratuit et sans engagement. Je réponds personnellement.</p></div>
 <div class="chips" id="types"></div>
 <div class="chips" id="pieces"></div>
 <div class="chips" id="fit"></div>
 <div class="kpis" id="kpis"></div>
 <div class="card"><p id="desc"></p><p id="dem" class="trend" style="display:none;margin-bottom:0"></p></div>
-<div class="card"><h3 id="ctitre">Prix au m² : évolution</h3>
-<div class="chips" id="horiz"></div>
-<p class="trend" id="trend"></p><div id="chart"></div><p class="meta" id="cmeta"></p></div>
-<h2>Dernières ventes comparables</h2>
+<div class="card"><h3 id="ctitre">Comment évoluent les prix au m²</h3>
+<p class="trend" id="trend"></p><details class="fold" style="margin:6px 0 0"><summary>Voir la courbe sur 12 ou 24 mois</summary><div class="chips" id="horiz"></div><div id="chart"></div><p class="meta" id="cmeta"></p></details></div>
+<h2>Ce qui s’est vendu récemment</h2>
 <div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
 <h2>Crédit immobilier</h2><div class="card" data-sec="taux"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
 <div id="capw" style="display:none"><h2>Qui peut acheter un bien comme le vôtre ?</h2>
@@ -197,7 +198,7 @@ function setCta(){
 }
 function render(){
   var c=choose(),what=describe(c);
-  $('titre').textContent='Prix de vente des '+what+' à '+VILLE;
+  $('titre').textContent='Ce que valent vraiment les '+what+' à '+VILLE+' en ce moment';
   chips($('types'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
   if(st.t==='a')chips($('pieces'),[[0,'Tous'],[1,'T1'],[2,'T2'],[3,'T3'],[4,'T4'],[5,'T5+']],st.p,function(v){st.p=v;render();});else $('pieces').textContent='';
   setCta();
@@ -205,14 +206,14 @@ function render(){
   chips($('horiz'),[[12,'12 mois'],[24,'24 mois']],st.h,function(v){st.h=v;render();});
   var cur=c.all.filter(function(v){return v[0]>END-12}),prev=c.all.filter(function(v){return v[0]<=END-12&&v[0]>END-24});
   var desc=c.n12+' vente'+(c.n12>1?'s':'')+' '+(/^appart/.test(what)?'d’':'de ')+what+' à '+VILLE+' entre '+lab(END-11)+' et '+lab(END)+'.';
-  if(c.n12<8)desc+=' Échantillon réduit : à lire avec prudence.';
-  if(S()&&!c.tol)desc+=' (Surface de votre bien non prise en compte faute de ventes comparables assez nombreuses.)';
+  if(c.n12<8)desc+=' Peu de ventes comparables : prenez ces chiffres comme un repère, une visite permet de préciser.';
+  if(S()&&!c.tol)desc+=' Pas assez de ventes de surface proche pour affiner au m² près.';
   $('desc').textContent=desc;
-  var dn=(DEM&&DEM[st.t])||0,de=$('dem');if(dn>=5){var dv=dn<10?5:Math.floor(dn/10)*10;de.textContent='Plus de '+dv+' acquéreurs de mon portefeuille cherchent actuellement '+(st.t==='a'?'un appartement':'une maison')+' à '+VILLE+'.';de.style.display='';}else de.style.display='none';
+  var dn=(DEM&&DEM[st.t])||0;$('dem').style.display='none';
   var k=$('kpis');k.textContent='';
   if(cur.length){
-    var pm=cur.map(function(v){return v[2]/v[1]}),big=[['Prix médian',eur(med(cur.map(function(v){return v[2]})),1000)],['Médiane au m²',eur(med(pm),10)+'/m²']];
-    big.forEach(function(b){var d=el('div',null,'kpi');d.appendChild(el('b',b[1]));d.appendChild(el('span',b[0]));k.appendChild(d);});
+    var pm=cur.map(function(v){return v[2]/v[1]}),big=[['Prix médian des '+what+' vendus ces 12 derniers mois',eur(med(cur.map(function(v){return v[2]})),1000)],['Médiane au m²',eur(med(pm),10)+'/m²']];
+    big.forEach(function(b,i){var d=el('div',null,i?'kpi':'kpi hero');d.appendChild(el('b',b[1]));d.appendChild(el('span',b[0]));k.appendChild(d);});
     if(cur.length>=8){var w=el('div',null,'kpi w');w.appendChild(el('b',eur(q(pm,.25),10)+' à '+eur(q(pm,.75),10)+'/m²'));w.appendChild(el('span','La moitié des ventes se font dans cette fourchette de prix au m²'));k.appendChild(w);}
   }
   var win=cur.length>=40?6:cur.length>=20?9:12;
@@ -220,9 +221,13 @@ function render(){
   tl.textContent='';
   if(ok.length>=6&&cur.length>=15){
     tr=trend(ok);
-    if(tr){var pc=tr.pct,txt=Math.abs(pc)<3?'Tendance : prix stables ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an)':'Tendance : '+(pc>0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an';
-      tl.textContent=txt+' · médiane glissante sur '+win+' mois';}
-  } else {tl.textContent='Tendance non significative : trop peu de ventes comparables.';}
+    if(tr){var pc=tr.pct,txt=Math.abs(pc)<3?'Des prix stables ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an)':'Tendance : '+(pc>0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an';
+      tl.textContent=txt;}
+  } else {tl.textContent='Trop peu de ventes pour dégager une tendance fiable.';}
+  var tp=tr?tr.pct:null,tw=tp===null?'':Math.abs(tp)<3?'prix stables':tp>0?'prix en hausse':'prix en baisse',ac;
+  if(dn>=5){var dv=dn<10?5:Math.floor(dn/10)*10;ac='Plus de '+dv+' acquéreurs que j’accompagne cherchent '+(st.t==='a'?'un appartement':'une maison')+' à '+VILLE+(tw?', avec des '+tw+' sur un an.':'.');}
+  else ac=tw?tw.charAt(0).toUpperCase()+tw.slice(1)+' sur un an à '+VILLE+', d’après les ventes réelles enregistrées.':'Les ventes réelles enregistrées à '+VILLE+', sans filtre.';
+  $('sous').textContent=ac;
   drawCap(cur.length>=5?med(cur.map(function(v){return v[2]})):0);
   draw(pts,tr);
   drawMap();
