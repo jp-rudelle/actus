@@ -235,11 +235,28 @@ def calc_json(cfg, now_dt):
 def agent_html(cfg):
     a = cfg['agent']
     tel = re.sub(r'\s', '', a['telephone'])
-    s = ('<strong>%s</strong><br>%s<br>%s<br><a class="tel" href="tel:%s">📞 %s</a>'
-         % (esc(a['nom']), esc(a['titre']), esc(a['secteur']), esc(tel), esc(a['telephone'])))
+    ph = ''
+    if a.get('photo'):
+        ph = '<img src="../%s" alt="%s" width="84" height="84">' % (esc(a['photo']), esc(a['nom']))
+    s = ('<div class="ag">%s<div><strong>%s</strong><br>%s<br>%s</div></div>'
+         '<div class="btns"><a class="btn pri" data-cta="appel" href="tel:%s">Appeler %s</a>'
+         '<a class="btn sec" id="ag2" data-cta="sms" href="sms:%s">Envoyer un SMS</a></div>'
+         % (ph, esc(a['nom']), esc(a['titre']), esc(a['secteur']), esc(tel), esc(a['telephone']), esc(tel)))
     if a.get('mention'):
         s += '<p class="legal">%s</p>' % esc(a['mention'])
     return s
+
+
+def demande_json(ville):
+    """Nombre d'acquereurs (base locale) par type pour la commune, fige a la generation. Jamais bloquant."""
+    try:
+        sys.path.insert(0, r'C:\Users\RUDELLE\iCloudDrive\claude\base-acquereur-efficity')
+        import serveur_matching as sm
+        r = {k: int(sm.demande({'commune': ville, 'type': v, 'jours': 90})['nb']) for k, v in (('m', 'Maison'), ('a', 'Appartement'))}
+        return json.dumps(r)
+    except Exception as e:
+        print('  (demande acquereurs indisponible : %s)' % e)
+        return 'null'
 
 
 def render_page(ville, data, end_mi, cfg, now_dt, template):
@@ -249,6 +266,9 @@ def render_page(ville, data, end_mi, cfg, now_dt, template):
             .replace('__VILLE__', esc(ville)).replace('__DATA__', payload).replace('__END__', str(end_mi))
             .replace('__COMPTEUR__', compteur_html(cfg)).replace('__CALC__', calc_json(cfg, now_dt))
             .replace('__TAUX__', taux_html(cfg, now_dt)).replace('__AGENT__', agent_html(cfg))
+            .replace('__TEL__', re.sub(r'\s', '', cfg['agent']['telephone']))
+            .replace('__AGJS__', json.dumps({'tel': re.sub(r'\s', '', cfg['agent']['telephone'])}))
+            .replace('__DEMJS__', demande_json(ville))
             .replace('__DATE__', now_dt.strftime('%d/%m/%Y')))
 
 

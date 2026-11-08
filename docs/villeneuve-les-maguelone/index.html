@@ -28,36 +28,48 @@ ul.v{list-style:none;padding:0;margin:6px 0}ul.v li{padding:6px 0;border-top:1px
 .agent a.tel{display:inline-block;margin-top:6px;background:var(--f);color:#fff;text-decoration:none;padding:11px 20px;border-radius:24px;font-weight:700}
 .legal{color:var(--m);font-size:12px;margin-top:16px}
 .cap p{margin:6px 0}
+.btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:24px;padding:12px 20px;font-size:16px;text-align:center}
+.btn.pri{background:var(--v);color:#fff;border:2px solid var(--v)}.btn.sec{background:#fff;color:var(--f);border:2px solid var(--v)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 14px}.cta .meta{flex:1 1 100%;margin:0}
+.bar{display:none}
+@media(max-width:700px){.bar{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--b);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:9}.bar .btn{flex:1;padding:12px 8px}body{padding-bottom:76px}}
+details.fold{margin:18px 0 10px}details.fold>summary{cursor:pointer;font-weight:900;color:var(--f);font-size:17px;padding:12px 16px;background:var(--c);border:1px solid var(--cl);border-radius:12px;list-style:none}details.fold>summary::-webkit-details-marker{display:none}details.fold>summary:after{content:' \25BE'}details[open].fold>summary:after{content:' \25B4'}details.fold[open]>summary{margin-bottom:10px}
+.kpi.w{flex:1 1 100%}
+.ag{display:flex;gap:14px;align-items:center;margin:12px 0}.ag img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid var(--cl)}.agent .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ah{color:var(--f);font-size:22px;margin:0 0 6px;font-weight:900;letter-spacing:-.03em}
 </style><script data-goatcounter="https://jprudelle.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script></head><body><header class="hd"><img src="../logo-efficity.png" alt="efficity" width="150" height="45"></header><main>
 <h1 id="titre">Prix de vente à Villeneuve-lès-Maguelone</h1>
 <p class="sub" id="sous">Taux de crédit et ventes réelles enregistrées (DVF)</p>
-<h2>Crédit immobilier</h2><div class="card" data-sec="taux"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
+<div class="cta"><a class="btn pri" id="cta1" data-cta="appel" href="tel:0618455175">Recevoir mon avis de valeur</a><a class="btn sec" id="cta2" data-cta="sms" href="#">Par SMS</a><p class="meta">Gratuit et sans engagement. Je réponds personnellement.</p></div>
 <div class="chips" id="types"></div>
 <div class="chips" id="pieces"></div>
-<div class="card"><p id="desc"></p></div>
+<div class="chips" id="fit"></div>
 <div class="kpis" id="kpis"></div>
+<div class="card"><p id="desc"></p><p id="dem" class="trend" style="display:none;margin-bottom:0"></p></div>
 <div class="card"><h3 id="ctitre">Prix au m² : évolution</h3>
 <div class="chips" id="horiz"></div>
 <p class="trend" id="trend"></p><div id="chart"></div><p class="meta" id="cmeta"></p></div>
 <h2>Dernières ventes comparables</h2>
 <div class="card"><ul class="v" id="last"></ul><p class="meta">Sans adresse. Source : DVF (Etalab / data.gouv.fr), actes enregistrés par les services fiscaux, ventes dans l'ancien. Les données publiques sont publiées avec plusieurs mois de décalage.</p></div>
+<h2>Crédit immobilier</h2><div class="card" data-sec="taux"><h3>Taux de crédit immobilier : 3,5 à 3,7 % sur 20 ans en octobre</h3><p>Selon les courtiers, le taux moyen sur 20 ans se situe autour de 3,55 % (Meilleurtaux, baromètre du 12 octobre 2026) à 3,66 % (Pretto), en hausse depuis le printemps. Le plafond du taux d&#x27;usure est passé à 5,40 % au 1er octobre pour les prêts de 20 ans et plus.</p><p class="meta">Chiffres relevés le 12/10/2026 · Source : <a href="https://www.meilleurtaux.com/credit-immobilier/taux-actuels/">Meilleurtaux / Pretto</a></p></div>
 <div id="capw" style="display:none"><h2>Qui peut acheter un bien comme le vôtre ?</h2>
 <div class="card cap" data-sec="capacite"><p class="meta">Mensualité qu'un acheteur peut consacrer à son crédit :</p><div class="chips" id="capm"></div><p id="cap1"></p><p id="cap2"></p><p id="cap3"></p><p class="meta" id="capn"></p></div></div>
-<h2>Carte des prix autour de Montpellier</h2>
-<div class="card" data-sec="carte"><div class="chips" id="ctypes"></div><div class="chips" id="cmode"></div><p class="trend" id="cinfo"></p><div id="cmap" class="gmap"></div>
+<details class="fold" data-sec="carte"><summary>Voir la carte des prix autour de Montpellier</summary>
+<div class="card"><div class="chips" id="ctypes"></div><div class="chips" id="cmode"></div><p class="trend" id="cinfo"></p><div id="cmap" class="gmap"></div>
 <div class="leg"><span id="cmin"></span><i></i><span id="cmax"></span></div>
-<p class="meta">Prix médian au m² sur 12 mois, par commune ; s'il y a moins de 10 ventes, la période est élargie à 24 puis 36 mois (vert : moins cher, rouge : plus cher ; hachuré : prix calculé sur 24 ou 36 mois ; pointillé : moins de 10 ventes enregistrées, prix estimé à partir de sites immobiliers tiers et donc indicatif). Touchez une commune pour le détail. Moyenne communale : l'écart entre quartiers peut être important.</p></div>
-<h2 id="qh" style="display:none">Montpellier : prix par quartier</h2>
-<div class="card" id="qcard" style="display:none"><div class="chips" id="qtypes"></div><div class="chips" id="qmode"></div><p class="trend" id="qinfo"></p><div id="qmap" class="gmap"></div>
+<p class="meta">Prix médian au m² sur 12 mois, par commune ; s'il y a moins de 10 ventes, la période est élargie à 24 puis 36 mois (vert : moins cher, rouge : plus cher ; hachuré : prix calculé sur 24 ou 36 mois ; pointillé : moins de 10 ventes enregistrées, prix estimé à partir de sites immobiliers tiers et donc indicatif). Touchez une commune pour le détail. Moyenne communale : l'écart entre quartiers peut être important.</p></div></details>
+<details class="fold" id="qdet" style="display:none"><summary>Voir les prix par quartier de Montpellier</summary>
+<div class="card" id="qcard"><div class="chips" id="qtypes"></div><div class="chips" id="qmode"></div><p class="trend" id="qinfo"></p><div id="qmap" class="gmap"></div>
 <div class="leg"><span id="qmin"></span><i></i><span id="qmax"></span></div>
-<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Prix sur 12 mois, élargi à 24 puis 36 mois s'il y a moins de 10 ventes ; hachuré : période élargie ; gris : moins de 10 ventes en 36 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.<span id="qfin"></span></p></div>
-<div class="agent" data-sec="contact"><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis.</p>
-<strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc<br><a class="tel" href="tel:0618455175">📞 06 18 45 51 75</a>
+<p class="meta">Sous-quartiers de Montpellier (découpage open data de Montpellier Méditerranée Métropole, ODbL) ; ventes DVF localisées par parcelle. Prix sur 12 mois, élargi à 24 puis 36 mois s'il y a moins de 10 ventes ; hachuré : période élargie ; gris : moins de 10 ventes en 36 mois. Le prix varie aussi à l'intérieur d'un sous-quartier.<span id="qfin"></span></p></div></details>
+<div class="agent" data-sec="contact"><h3 class="ah">Quelle est la valeur de votre bien ?</h3><p>Chaque bien est différent : état, étage ou terrain, exposition, quartier. Ces chiffres sont des repères statistiques, pas une estimation. Je me déplace pour vous donner un avis de valeur précis, gratuit et sans engagement.</p>
+<div class="ag"><div><strong>Jean-Pascal Rudelle</strong><br>Conseiller Immobilier Efficity<br>Secteur Montpellier / Saint-Gély-du-Fesc</div></div><div class="btns"><a class="btn pri" data-cta="appel" href="tel:0618455175">Appeler 06 18 45 51 75</a><a class="btn sec" id="ag2" data-cta="sms" href="sms:0618455175">Envoyer un SMS</a></div>
 <p class="legal">Page mise à jour le 08/11/2026. Informations publiques, sources citées ; elle ne constitue ni une estimation ni une promesse de prix.</p></div>
 </main>
+<div class="bar"><a class="btn pri" data-cta="appel" href="tel:0618455175">Appeler</a><a class="btn sec" id="bar2" data-cta="sms" href="#">Écrire par SMS</a></div>
 <script>
 (function(){
-var D={"m":[[300,104,448500,4],[300,178,807300,5],[301,105,453665,4],[301,120,445000,4],[301,105,217500,3],[301,72,311500,3],[302,99,450000,5],[302,120,527550,5],[302,78,197000,3],[302,86,378450,4],[302,70,138000,4],[304,99,385125,5],[303,33,67000,2],[303,70,205200,3],[304,180,579600,6],[304,89,399000,3],[304,112,542300,6],[304,102,300400,3],[305,114,427500,4],[304,96,473150,4],[305,124,130000,5],[305,97,390000,4],[305,118,394540,5],[305,75,290000,4],[306,102,380700,6],[306,119,517720,4],[307,84,382550,4],[307,140,420000,3],[306,104,208400,4],[307,115,660000,5],[307,111,394000,4],[308,105,441783,4],[308,70,209700,3],[308,145,430000,5],[308,145,375000,5],[308,110,350000,5],[308,115,431200,4],[309,90,534700,4],[309,84,420400,4],[310,88,300000,4],[311,85,375000,4],[311,88,447400,4],[288,118,560230,4],[288,96,385000,4],[288,67,375000,3],[288,100,140000,2],[289,95,341500,4],[289,62,320000,3],[289,75,304300,4],[289,104,132500,4],[290,85,490400,3],[289,84,382000,4],[290,59,294450,3],[289,85,75000,3],[290,131,439746,5],[291,83,335000,4],[291,101,388000,4],[291,92,470000,4],[291,48,180000,3],[291,33,147600,3],[291,69,446430,4],[291,73,353000,3],[292,89,365120,4],[293,53,110500,3],[293,77,216500,4],[294,96,538000,4],[294,79,346960,4],[294,112,561250,5],[294,108,447000,3],[294,68,314400,4],[294,96,380000,4],[294,96,320750,4],[294,135,460000,6],[294,79,340000,4],[294,141,612050,4],[294,70,264809,3],[295,70,180780,4],[295,72,290000,3],[295,89,356000,4],[296,35,82000,1],[296,105,320000,4],[295,88,332850,4],[297,80,227500,4],[297,80,461050,3],[298,62,191000,4],[298,33,171100,2],[298,120,474000,4],[298,73,317000,4],[298,60,160000,3],[298,46,60000,3],[299,83,268700,3],[299,103,503500,5],[299,75,343200,3],[299,112,360000,4],[282,130,533500,5],[282,59,237995,3],[282,100,465900,3],[282,92,388400,4],[282,119,385000,4],[282,30,109000,2],[283,43,240000,2],[282,108,475850,4],[282,118,433000,4],[283,39,105000,1],[282,76,332000,3],[283,180,757600,6],[283,120,572800,5],[284,124,461000,5],[283,140,607690,6],[284,78,319000,3],[284,34,139800,3],[284,101,404960,5],[284,80,230000,4],[284,108,496500,6],[284,70,269350,3],[284,135,757500,4],[285,89,355050,4],[285,112,463100,6],[285,80,314590,4],[285,144,250000,6],[287,84,357000,4],[286,40,158350,1],[287,120,525000,4],[287,80,416500,3],[287,84,266000,4],[287,90,157837,4],[312,88,375000,4],[312,97,375000,4],[312,73,260000,4],[312,54,172000,3],[313,96,283800,5],[313,113,393000,4],[314,96,362400,4],[313,143,547000,4],[314,75,271000,4],[315,74,383500,3],[315,70,108720,3],[314,159,580000,5],[315,80,232000,4],[315,80,200000,4],[315,113,395000,5],[316,80,336850,4],[316,93,302410,4],[316,160,449000,6],[316,68,139900,4],[316,90,340000,4],[317,89,383800,4],[317,140,525000,5],[317,161,690000,5]],"a":[[300,34,111700,2],[300,39,87500,2],[301,29,77500,1],[301,55,134000,3],[301,53,170000,2],[301,63,215720,3],[302,29,119000,1],[302,57,190000,3],[303,66,188500,3],[303,33,128000,2],[302,65,244000,3],[305,47,155000,2],[305,47,155000,2],[306,47,155000,2],[307,100,300500,4],[307,58,267495,3],[307,66,221000,2],[307,41,147770,2],[308,105,330700,6],[308,61,252200,3],[308,28,107200,2],[309,78,245000,4],[308,70,242350,3],[309,39,115000,2],[310,76,356500,4],[311,86,243000,3],[311,33,111650,2],[311,75,235000,4],[311,64,200000,3],[290,66,230765,3],[289,63,220000,3],[291,55,212000,4],[293,78,246750,3],[293,40,200765,3],[293,76,279700,4],[293,42,175000,3],[294,55,144000,2],[296,62,231250,3],[297,41,109700,2],[297,86,140000,3],[299,47,170000,2],[299,34,158500,2],[299,37,110000,1],[282,85,402200,4],[282,28,40000,2],[283,63,218800,3],[284,77,125000,2],[284,47,157300,2],[285,64,200000,3],[287,55,159950,1],[287,90,407000,4],[312,67,152180,3],[312,60,170000,2],[312,34,93000,2],[313,74,220000,3],[312,66,195020,3],[313,66,248120,3],[313,46,210000,2],[313,64,257000,3],[314,57,160000,3],[314,77,221389,4],[316,30,115000,1],[316,58,251400,3],[316,39,130000,2],[317,41,149000,2],[316,75,274900,3],[317,90,259250,4]]}, END=317, VILLE="Villeneuve-lès-Maguelone", SLUG="villeneuve-les-maguelone", CARTE=null, CALC={"pct": 3.6, "annees": 20, "date": "12/10/2026"};
+var D={"m":[[300,104,448500,4],[300,178,807300,5],[301,105,453665,4],[301,120,445000,4],[301,105,217500,3],[301,72,311500,3],[302,99,450000,5],[302,120,527550,5],[302,78,197000,3],[302,86,378450,4],[302,70,138000,4],[304,99,385125,5],[303,33,67000,2],[303,70,205200,3],[304,180,579600,6],[304,89,399000,3],[304,112,542300,6],[304,102,300400,3],[305,114,427500,4],[304,96,473150,4],[305,124,130000,5],[305,97,390000,4],[305,118,394540,5],[305,75,290000,4],[306,102,380700,6],[306,119,517720,4],[307,84,382550,4],[307,140,420000,3],[306,104,208400,4],[307,115,660000,5],[307,111,394000,4],[308,105,441783,4],[308,70,209700,3],[308,145,430000,5],[308,145,375000,5],[308,110,350000,5],[308,115,431200,4],[309,90,534700,4],[309,84,420400,4],[310,88,300000,4],[311,85,375000,4],[311,88,447400,4],[288,118,560230,4],[288,96,385000,4],[288,67,375000,3],[288,100,140000,2],[289,95,341500,4],[289,62,320000,3],[289,75,304300,4],[289,104,132500,4],[290,85,490400,3],[289,84,382000,4],[290,59,294450,3],[289,85,75000,3],[290,131,439746,5],[291,83,335000,4],[291,101,388000,4],[291,92,470000,4],[291,48,180000,3],[291,33,147600,3],[291,69,446430,4],[291,73,353000,3],[292,89,365120,4],[293,53,110500,3],[293,77,216500,4],[294,96,538000,4],[294,79,346960,4],[294,112,561250,5],[294,108,447000,3],[294,68,314400,4],[294,96,380000,4],[294,96,320750,4],[294,135,460000,6],[294,79,340000,4],[294,141,612050,4],[294,70,264809,3],[295,70,180780,4],[295,72,290000,3],[295,89,356000,4],[296,35,82000,1],[296,105,320000,4],[295,88,332850,4],[297,80,227500,4],[297,80,461050,3],[298,62,191000,4],[298,33,171100,2],[298,120,474000,4],[298,73,317000,4],[298,60,160000,3],[298,46,60000,3],[299,83,268700,3],[299,103,503500,5],[299,75,343200,3],[299,112,360000,4],[282,130,533500,5],[282,59,237995,3],[282,100,465900,3],[282,92,388400,4],[282,119,385000,4],[282,30,109000,2],[283,43,240000,2],[282,108,475850,4],[282,118,433000,4],[283,39,105000,1],[282,76,332000,3],[283,180,757600,6],[283,120,572800,5],[284,124,461000,5],[283,140,607690,6],[284,78,319000,3],[284,34,139800,3],[284,101,404960,5],[284,80,230000,4],[284,108,496500,6],[284,70,269350,3],[284,135,757500,4],[285,89,355050,4],[285,112,463100,6],[285,80,314590,4],[285,144,250000,6],[287,84,357000,4],[286,40,158350,1],[287,120,525000,4],[287,80,416500,3],[287,84,266000,4],[287,90,157837,4],[312,88,375000,4],[312,97,375000,4],[312,73,260000,4],[312,54,172000,3],[313,96,283800,5],[313,113,393000,4],[314,96,362400,4],[313,143,547000,4],[314,75,271000,4],[315,74,383500,3],[315,70,108720,3],[314,159,580000,5],[315,80,232000,4],[315,80,200000,4],[315,113,395000,5],[316,80,336850,4],[316,93,302410,4],[316,160,449000,6],[316,68,139900,4],[316,90,340000,4],[317,89,383800,4],[317,140,525000,5],[317,161,690000,5]],"a":[[300,34,111700,2],[300,39,87500,2],[301,29,77500,1],[301,55,134000,3],[301,53,170000,2],[301,63,215720,3],[302,29,119000,1],[302,57,190000,3],[303,66,188500,3],[303,33,128000,2],[302,65,244000,3],[305,47,155000,2],[305,47,155000,2],[306,47,155000,2],[307,100,300500,4],[307,58,267495,3],[307,66,221000,2],[307,41,147770,2],[308,105,330700,6],[308,61,252200,3],[308,28,107200,2],[309,78,245000,4],[308,70,242350,3],[309,39,115000,2],[310,76,356500,4],[311,86,243000,3],[311,33,111650,2],[311,75,235000,4],[311,64,200000,3],[290,66,230765,3],[289,63,220000,3],[291,55,212000,4],[293,78,246750,3],[293,40,200765,3],[293,76,279700,4],[293,42,175000,3],[294,55,144000,2],[296,62,231250,3],[297,41,109700,2],[297,86,140000,3],[299,47,170000,2],[299,34,158500,2],[299,37,110000,1],[282,85,402200,4],[282,28,40000,2],[283,63,218800,3],[284,77,125000,2],[284,47,157300,2],[285,64,200000,3],[287,55,159950,1],[287,90,407000,4],[312,67,152180,3],[312,60,170000,2],[312,34,93000,2],[313,74,220000,3],[312,66,195020,3],[313,66,248120,3],[313,46,210000,2],[313,64,257000,3],[314,57,160000,3],[314,77,221389,4],[316,30,115000,1],[316,58,251400,3],[316,39,130000,2],[317,41,149000,2],[316,75,274900,3],[317,90,259250,4]]}, END=317, VILLE="Villeneuve-lès-Maguelone", SLUG="villeneuve-les-maguelone", CARTE=null, CALC={"pct": 3.6, "annees": 20, "date": "12/10/2026"}, AG={"tel": "0618455175"}, DEM={"m": 0, "a": 1};
 var MOIS=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
 function lab(mi){return MOIS[mi%12]+' '+(2000+Math.floor(mi/12));}
 function fr(x){return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
@@ -71,11 +83,12 @@ var P=new URLSearchParams(location.search);
 /* lien lisible : #maison-120m2, #t3-65m2, #appartement (l'ancien format ?t=a&p=3&s=65 reste valable) */
 var H=(location.hash||'').toLowerCase().match(/^#(maison|appartement|t([1-5]))(?:-(\d{2,3})m2)?$/);
 if(H){P.set('t',H[1]==='maison'?'m':'a');if(H[2])P.set('p',H[2]);if(H[3])P.set('s',H[3]);}
-var st={t:P.get('t')==='a'?'a':P.get('t')==='m'?'m':'',p:clamp(parseInt(P.get('p'),10),1,5),s:clamp(parseInt(P.get('s'),10),9,500),h:12};
+var st={t:P.get('t')==='a'?'a':P.get('t')==='m'?'m':'',p:clamp(parseInt(P.get('p'),10),1,5),s:clamp(parseInt(P.get('s'),10),9,500),h:12,fit:false};
 if(!st.t){st.t=D.a.length>D.m.length?'a':'m';}
 var NOM={m:'maisons',a:'appartements'};
+function S(){return st.fit?st.s:0;}
 function sel(type,rooms,tol){
-  var cut=END-11,s=st.s;
+  var cut=END-11,s=S();
   return D[type].filter(function(v){
     if(rooms&&type==='a'){if(rooms>=5?v[3]<5:v[3]!==rooms)return false;}
     if(tol&&s){var d=Math.max(8,s*tol);if(Math.abs(v[1]-s)>d)return false;}
@@ -83,7 +96,7 @@ function sel(type,rooms,tol){
   });
 }
 function choose(){
-  var steps=[],r=(st.t==='a'&&st.p)?st.p:0,s=st.s;
+  var steps=[],r=(st.t==='a'&&st.p)?st.p:0,s=S();
   if(s){steps.push([r,0.2]);steps.push([r,0.3]);}
   if(r)steps.push([r,0]);
   steps.push([0,s?0.3:0]);steps.push([0,0]);
@@ -99,7 +112,7 @@ function choose(){
 function describe(c){
   var w=NOM[st.t];
   if(st.t==='a'&&c.rooms)w=(c.rooms>=5?'T5 et plus':'T'+c.rooms);
-  if(c.tol&&st.s){var d=Math.max(8,st.s*c.tol);w+=' de '+Math.max(9,Math.round(st.s-d))+' à '+Math.round(st.s+d)+' m²';}
+  if(c.tol&&S()){var d=Math.max(8,S()*c.tol);w+=' de '+Math.max(9,Math.round(S()-d))+' à '+Math.round(S()+d)+' m²';}
   return w;
 }
 function track(n,r){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:n,title:VILLE,event:true});else if(!r)setTimeout(function(){track(n,1);},2000);}catch(e){}}
@@ -177,28 +190,37 @@ function draw(pts,tr){
   var first=ok[0],last=ok[ok.length-1];
   $('cmeta').textContent='Trait vert : prix médian au m² lissé ('+lab(first.t)+' à '+lab(last.t)+') ; zone claire : la moitié centrale des ventes ; pointillé : tendance. Chaque point repose sur au moins 5 ventes ; la courbe est lissée sur 3 mois et ne remplace pas une estimation.'; /* lissage2 */
 }
+function setCta(){
+  var b='Bonjour, je souhaite un avis de valeur pour mon '+(st.t==='a'?'appartement'+(st.p?' T'+st.p:''):'maison')+(st.s?' de '+st.s+' m²':'')+' à '+VILLE+'.';
+  var h='sms:'+AG.tel+'?&body='+encodeURIComponent(b);
+  ['cta2','bar2','ag2'].forEach(function(i){var e=$(i);if(e)e.setAttribute('href',h);});
+}
 function render(){
   var c=choose(),what=describe(c);
   $('titre').textContent='Prix de vente des '+what+' à '+VILLE;
   chips($('types'),[['m','Maisons'],['a','Appartements']],st.t,function(v){st.t=v;st.p=0;render();});
   if(st.t==='a')chips($('pieces'),[[0,'Tous'],[1,'T1'],[2,'T2'],[3,'T3'],[4,'T4'],[5,'T5+']],st.p,function(v){st.p=v;render();});else $('pieces').textContent='';
+  setCta();
+  if(st.s){chips($('fit'),[[false,'Tous les '+(st.t==='a'&&st.p?(st.p>=5?'T5 et plus':'T'+st.p):NOM[st.t])],[true,'Autour de '+st.s+' m²']],st.fit,function(v){st.fit=v;render();});}else $('fit').textContent='';
   chips($('horiz'),[[12,'12 mois'],[24,'24 mois']],st.h,function(v){st.h=v;render();});
   var cur=c.all.filter(function(v){return v[0]>END-12}),prev=c.all.filter(function(v){return v[0]<=END-12&&v[0]>END-24});
   var desc=c.n12+' vente'+(c.n12>1?'s':'')+' '+(/^appart/.test(what)?'d’':'de ')+what+' à '+VILLE+' entre '+lab(END-11)+' et '+lab(END)+'.';
   if(c.n12<8)desc+=' Échantillon réduit : à lire avec prudence.';
-  if(st.s&&!c.tol)desc+=' (Surface de votre bien non prise en compte faute de ventes comparables assez nombreuses.)';
+  if(S()&&!c.tol)desc+=' (Surface de votre bien non prise en compte faute de ventes comparables assez nombreuses.)';
   $('desc').textContent=desc;
+  var dn=(DEM&&DEM[st.t])||0,de=$('dem');if(dn>=5){var dv=dn<10?5:Math.floor(dn/10)*10;de.textContent='Plus de '+dv+' acquéreurs de mon portefeuille cherchent actuellement '+(st.t==='a'?'un appartement':'une maison')+' à '+VILLE+'.';de.style.display='';}else de.style.display='none';
   var k=$('kpis');k.textContent='';
   if(cur.length){
     var pm=cur.map(function(v){return v[2]/v[1]}),big=[['Prix médian',eur(med(cur.map(function(v){return v[2]})),1000)],['Médiane au m²',eur(med(pm),10)+'/m²']];
     big.forEach(function(b){var d=el('div',null,'kpi');d.appendChild(el('b',b[1]));d.appendChild(el('span',b[0]));k.appendChild(d);});
+    if(cur.length>=8){var w=el('div',null,'kpi w');w.appendChild(el('b',eur(q(pm,.25),10)+' à '+eur(q(pm,.75),10)+'/m²'));w.appendChild(el('span','La moitié des ventes se font dans cette fourchette de prix au m²'));k.appendChild(w);}
   }
   var win=cur.length>=40?6:cur.length>=20?9:12;
   var pts=smooth(windows(c.all,st.h,win)),ok=pts.filter(function(p){return p.m}),tr=null,tl=$('trend');
   tl.textContent='';
   if(ok.length>=6&&cur.length>=15){
     tr=trend(ok);
-    if(tr){var pc=tr.pct,txt=Math.abs(pc)<1.5?'Tendance : prix stables ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an)':'Tendance : '+(pc>0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an';
+    if(tr){var pc=tr.pct,txt=Math.abs(pc)<3?'Tendance : prix stables ('+(pc>=0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an)':'Tendance : '+(pc>0?'+':'−')+Math.abs(pc).toFixed(1).replace('.',',')+' % par an';
       tl.textContent=txt+' · médiane glissante sur '+win+' mois';}
   } else {tl.textContent='Tendance non significative : trop peu de ventes comparables.';}
   drawCap(cur.length>=5?med(cur.map(function(v){return v[2]})):0);
@@ -276,12 +298,12 @@ function paintMap(P,data,curSlug){
 }
 function drawMap(){
   if(CARTE)paintMap('c',CARTE,SLUG);
-  if(QUART&&SLUG==='montpellier'){$('qh').style.display='';$('qcard').style.display='';paintMap('q',QUART,'');}
+  if(QUART&&SLUG==='montpellier'){$('qdet').style.display='';paintMap('q',QUART,'');}
 }
 try{fetch('../carte.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){CARTE=j;drawMap();}}).catch(function(){});}catch(e){}
 try{if(SLUG==='montpellier')fetch('../quartiers.json').then(function(r){return r.ok?r.json():null}).then(function(j){if(j){QUART=j;drawMap();}}).catch(function(){});}catch(e){}
 
-document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a.tel'))track('appel');});
+document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('a.tel,a[data-cta]'))track('appel');});
 try{if('IntersectionObserver' in window){var seen={},io=new IntersectionObserver(function(es){es.forEach(function(x){var n=x.target.getAttribute('data-sec');if(x.isIntersecting&&!seen[n]){seen[n]=1;track('vu-'+n);}});},{threshold:.5});
   Array.prototype.forEach.call(document.querySelectorAll('[data-sec]'),function(n){io.observe(n);});}}catch(e){}
 render();
