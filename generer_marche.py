@@ -276,6 +276,10 @@ def stats_for(data, end_mi):
 GEO_URL = 'https://geo.api.gouv.fr/departements/34/communes?fields=nom,code&format=geojson&geometry=contour'
 BBOX = (3.58, 43.44, 4.22, 43.83)   # Montpellier et alentours (lon min, lat min, lon max, lat max)
 CARTE_MIN_VENTES = 10
+try:
+    COMPL = json.loads((Path(__file__).parent / 'complements_carte.json').read_text(encoding='utf-8'))
+except Exception:
+    COMPL = {}
 
 
 def _dp(pts, eps):
@@ -361,6 +365,11 @@ def build_carte(ventes, end_mi):
         rec['b'] = [round(max(xs) - min(xs)), round(max(ys) - min(ys))]
         for kind in ('m', 'a'):
             rec[kind] = _stat(px.get(rec['k'], {}).get(kind))
+            cp = COMPL.get(rec['n'])
+            if cp and not rec[kind][1] and cp.get(kind):
+                # zone grise : estimation issue d'un site tiers (indicative, étiquetée comme telle)
+                rec[kind] = [rec[kind][0], int(cp[kind]), None, 0, 1]
+                rec.setdefault('e', {})[kind] = '%s, %s' % (cp['src'], cp['date'])
         communes.append(rec)
     return {'fin_mi': end_mi, 'w': 1000, 'h': H, 'lb': 50, 'c': communes}
 

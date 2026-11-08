@@ -1,0 +1,276 @@
+{
+ "Montarnaud": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3059
+ },
+ "Montaud": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 3747,
+  "a": 3303
+ },
+ "Mudaison": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3686
+ },
+ "Murles": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 3733,
+  "a": 3786
+ },
+ "Murviel-lès-Montpellier": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3178
+ },
+ "Puéchabon": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 1989
+ },
+ "Rouet": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 3640,
+  "a": 2408
+ },
+ "Saint-Bauzille-de-Montmel": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3052
+ },
+ "Entre-Vignes": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 2781
+ },
+ "Sainte-Croix-de-Quintillargues": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 3701,
+  "a": 3042
+ },
+ "Saint-Drézéry": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3067
+ },
+ "Saint-Geniès-des-Mourgues": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3787
+ },
+ "Saint-Hilaire-de-Beauvoir": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 3596,
+  "a": 2997
+ },
+ "Saint-Jean-de-Cornies": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 3755,
+  "a": 2953
+ },
+ "Saint-Jean-de-Cuculles": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "m": 4212,
+  "a": 3880
+ },
+ "Saint-Just": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 3254
+ },
+ "Saint-Martin-de-Londres": {
+  "src": "RealAdvisor",
+  "date": "10/2026",
+  "a": 2683
+ },
+ "Argelliers": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 3610
+ },
+ "Assas": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 3885
+ },
+ "Aumelas": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 3213
+ },
+ "Beaulieu": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 1722
+ },
+ "La Boissière": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 4174
+ },
+ "Buzignargues": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 2606,
+  "a": 3275
+ },
+ "Campagne": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 1795,
+  "a": 1784
+ },
+ "Causse-de-la-Selle": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 2231,
+  "a": 3038
+ },
+ "Cazevieille": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 3185,
+  "a": 4705
+ },
+ "Combaillaux": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 3617
+ },
+ "Fontanès": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 2328
+ },
+ "Galargues": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 2682,
+  "a": 2928
+ },
+ "Garrigues": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 2884,
+  "a": 2988
+ },
+ "Guzargues": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 3425,
+  "a": 3890
+ },
+ "Mas-de-Londres": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "m": 2842,
+  "a": 3427
+ },
+ "Les Matelles": {
+  "src": "agence.immo (modélisé)",
+  "date": "2026",
+  "a": 3898
+ },
+ "Lansargues": {
+  "src": "netvendeur.com (prix des annonces)",
+  "date": "02/2026",
+  "a": 3294
+ },
+ "Saint-Nazaire-de-Pézan": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "m": 3672,
+  "a": 2096
+ },
+ "Saint-Paul-et-Valmalle": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3016
+ },
+ "Saint-Sériès": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3039
+ },
+ "Saint-Vincent-de-Barbeyrargues": {
+  "src": "immovrai (ventes DVF)",
+  "date": "06/2026",
+  "a": 3674
+ },
+ "Saturargues": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3010
+ },
+ "Saussan": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3682
+ },
+ "Saussines": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3376
+ },
+ "Le Triadou": {
+  "src": "immovrai (ventes DVF)",
+  "date": "06/2026",
+  "m": 4174,
+  "a": 2702
+ },
+ "Vacquières": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3469
+ },
+ "Vailhauquès": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3546
+ },
+ "Valergues": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3662
+ },
+ "Valflaunès": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "m": 3870,
+  "a": 3661
+ },
+ "Vic-la-Gardiole": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 2929
+ },
+ "Villetelle": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 2925
+ },
+ "Villeveyrac": {
+  "src": "immovrai (ventes DVF)",
+  "date": "06/2026",
+  "a": 4733
+ },
+ "Viols-en-Laval": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "m": 4011,
+  "a": 3374
+ },
+ "Viols-le-Fort": {
+  "src": "Square Habitat (modélisé)",
+  "date": "2026",
+  "a": 3344
+ }
+}
