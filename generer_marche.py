@@ -531,7 +531,9 @@ def main():
     if quart:
         (OUT / 'quartiers.json').write_text(json.dumps(quart, separators=(',', ':'), ensure_ascii=False), encoding='utf-8')
         print('quartiers.json : %d sous-quartiers' % len(quart['c']))
-    (OUT / 'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Marché</title>', encoding='utf-8')
+    # SITE_PERSO : ne pas ecraser la page d'accueil du site (docs/index.html) si elle existe
+    if not (OUT / 'index.html').exists() or (OUT / 'index.html').stat().st_size < 500:
+        (OUT / 'index.html').write_text('<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Marché</title>', encoding='utf-8')
 
     print('\nÀ coller dans content.js :')
     print('const ACTUS_COMMUNES = ' + json.dumps(sorted(set(slugify(c) for c in cfg['communes'])), ensure_ascii=False) + ';')

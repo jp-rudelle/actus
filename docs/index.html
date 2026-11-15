@@ -1,1 +1,504 @@
-<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>Marché</title>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jean-Pascal Rudelle, conseiller immobilier à Montpellier</title>
+<meta name="description" content="Vendre votre bien à Montpellier au juste prix. Jean-Pascal Rudelle, conseiller immobilier indépendant efficity : 31 biens vendus, estimation offerte sur place.">
+<link rel="canonical" href="https://jprudelle.com/">
+<meta property="og:title" content="Jean-Pascal Rudelle, conseiller immobilier à Montpellier">
+<meta property="og:description" content="Estimation offerte, un seul interlocuteur de l'estimation à la signature.">
+<meta property="og:image" content="https://jprudelle.com/img/a01.jpg">
+<meta property="og:url" content="https://jprudelle.com/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Charte efficity : vert, blanc, noir, Source Sans. Mise en page : beaucoup de blanc, graisses 300/700 en contraste, bandes noires pour le haut de gamme. */
+:root{
+  --green:#52AE32;
+  --green-ink:#3A8421;
+  --ink:#101310;
+  --mute:#5C645C;
+  --line:#E2E6E0;
+  --soft:#F4F7F2;
+  --white:#FFFFFF;
+  --font:"Source Sans 3","Source Sans Pro",Helvetica,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+h1,h2,h3{margin:0;line-height:1.08;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(38px,5.4vw,66px);font-weight:300}
+h1 b,h2 b{font-weight:700}
+h2{font-size:clamp(30px,3.8vw,46px);font-weight:300}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green-ink);margin:0 0 14px}
+.lead{color:var(--mute);font-size:19px;max-width:34em;margin:22px 0 0}
+.num{font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:15px 30px;border-radius:25px;background:var(--green);color:#fff;font-weight:700;font-size:17px;text-decoration:none;border:2px solid var(--green);transition:background .2s,border-color .2s,color .2s}
+.btn:hover{background:var(--green-ink);border-color:var(--green-ink)}
+.btn.line{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.line:hover{background:var(--ink);color:#fff}
+.btn.sm{padding:10px 20px;font-size:15px}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 0}
+.sig{text-decoration:none;line-height:1.15}
+.sig b{font-size:20px;font-weight:700;display:block}
+.sig span{font-size:13px;color:var(--mute)}
+.sig i{font-style:normal;color:var(--green-ink);font-weight:700}
+nav{display:flex;gap:24px;font-size:15px}
+nav a{text-decoration:none;color:var(--mute);font-weight:600}
+nav a:hover{color:var(--ink)}
+.bar-cta{display:flex;align-items:center;gap:16px}
+.bar-tel{font-weight:700;text-decoration:none;white-space:nowrap}
+
+/* hero */
+.hero-photo{position:relative;background:var(--ink);color:#fff;overflow:visible}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(16,19,16,.86) 0%,rgba(16,19,16,.62) 38%,rgba(16,19,16,.06) 78%)}
+.hero-in{position:relative;z-index:2;padding-top:104px;padding-bottom:120px;min-height:600px;display:flex;flex-direction:column;justify-content:center}
+.hero-in h1{max-width:13em}
+.hero-in .eyebrow{color:#8FDB73}
+.hero-in .lead{color:#E6EBE3}
+.hero-in .btn.line{color:#fff;border-color:#fff}
+.hero-in .btn.line:hover{background:#fff;color:var(--ink)}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
+.reassure{font-size:14.5px;color:var(--mute);margin:14px 0 0}
+.hero-in .reassure{color:#CBD2C8}
+.idcard{position:absolute;right:24px;bottom:-56px;background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 18px 40px rgba(16,19,16,.18);display:flex;gap:20px;align-items:center;padding:18px 30px 18px 18px}
+.idcard img{width:128px;height:128px;border-radius:50%;object-fit:cover;flex:none}
+.idcard b{display:block;font-size:24px;line-height:1.15;margin-bottom:4px}
+.idcard span{font-size:16px;color:var(--mute);display:block}
+.credit{position:absolute;left:24px;bottom:16px;margin:0;font-size:13px;color:#D5DBD2}
+.idcard .stars{color:var(--green-ink);font-weight:700}
+
+.proof{margin-top:84px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.proof ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
+.proof li{padding:26px 20px;border-left:1px solid var(--line)}
+.proof li:first-child{border-left:none;padding-left:0}
+.proof strong{display:block;font-size:44px;font-weight:300;line-height:1;letter-spacing:-.02em}
+.proof strong small{font-size:22px;color:var(--mute)}
+.proof span{font-size:15px;color:var(--mute)}
+
+section{padding:88px 0}
+.head{max-width:44em;margin-bottom:44px}
+.head p{color:var(--mute);margin:16px 0 0;font-size:18px}
+.soft{background:var(--soft)}
+
+/* histoires */
+.stories{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.story{background:#fff;border:1px solid var(--line);border-top:4px solid var(--green);padding:26px 24px 22px;display:flex;flex-direction:column;gap:14px}
+.story h3{font-size:23px;font-weight:700}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;font-size:15px}
+.ba div{background:var(--soft);padding:10px 12px}
+.ba div b{display:block;font-size:20px}
+.ba div.after{background:var(--ink);color:#fff}
+.ba em{font-style:normal;color:var(--green-ink);font-weight:700;font-size:20px}
+.story p{margin:0;color:var(--mute);font-size:16px}
+.story small{margin-top:auto;font-size:13.5px;color:var(--mute)}
+
+/* vendus */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.chip{font:inherit;font-size:15px;font-weight:600;padding:9px 18px;border-radius:25px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.grid-sold{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.sold{margin:0}
+.ph{position:relative;overflow:hidden;background:var(--soft)}
+.ph img{width:100%;aspect-ratio:3/2;object-fit:cover;transition:transform .5s}
+.sold:hover img,.sale:hover img{transform:scale(1.04)}
+.tag{position:absolute;left:0;top:14px;background:var(--green);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px}
+figcaption,.meta{padding:10px 2px 0;display:flex;flex-direction:column;line-height:1.35}
+figcaption b,.meta b{font-size:16px}
+figcaption span,.meta span{font-size:14.5px;color:var(--mute)}
+.sold[hidden]{display:none}
+
+/* méthode */
+.method{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:64px 1fr;gap:6px 14px;padding:22px 0;border-top:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-size:34px;font-weight:300;color:var(--green-ink);line-height:1;grid-row:span 2}
+.steps h3{font-size:22px;font-weight:700}
+.steps p{margin:0;color:var(--mute);font-size:16px}
+.pledge{background:var(--ink);color:#fff;padding:34px 32px}
+.pledge h3{font-size:26px;font-weight:300;margin-bottom:18px}
+.pledge ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.pledge li{padding-left:30px;position:relative;font-size:16.5px;color:#DDE3DA}
+.pledge li::before{content:"";position:absolute;left:0;top:.45em;width:16px;height:9px;border-left:3px solid var(--green);border-bottom:3px solid var(--green);transform:rotate(-45deg)}
+.pledge li b{color:#fff}
+
+/* à vendre */
+.dark{background:var(--ink);color:#fff}
+.dark .eyebrow{color:var(--green)}
+.dark .head p{color:#B4BCB1}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.sale{text-decoration:none;display:block}
+.sale .meta strong{font-size:19px;margin-top:4px;font-variant-numeric:tabular-nums}
+.dark .meta span{color:#B4BCB1}
+.dark .meta strong{color:var(--green)}
+.feat .ph img{aspect-ratio:16/9}
+.grid-sale{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px;padding-top:40px;border-top:1px solid #2C322B}
+
+/* avis */
+.rev{display:grid;grid-template-columns:auto 1fr;gap:56px;align-items:center}
+.score{border:1px solid var(--line);padding:30px 34px;text-align:center;min-width:240px}
+.score strong{font-size:84px;font-weight:300;line-height:1;display:block;letter-spacing:-.03em}
+.score strong small{font-size:30px;color:var(--mute)}
+.score span{display:block;color:var(--mute);font-size:15px;margin-top:8px}
+.score a{display:inline-block;margin-top:14px;font-weight:700;color:var(--green-ink)}
+blockquote{margin:0;font-size:clamp(26px,3.2vw,40px);font-weight:300;line-height:1.2;letter-spacing:-.01em}
+.rev cite{display:block;font-style:normal;font-size:15px;color:var(--mute);margin-top:14px}
+.themes{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.themes li{border:1px solid var(--line);border-radius:25px;padding:6px 16px;font-size:15px}
+.todo{font-size:14px;color:var(--mute);border-left:3px solid var(--green);padding-left:14px;margin:26px 0 0;max-width:48em}
+
+/* prix */
+.price{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:center}
+.scale{position:relative;height:10px;background:linear-gradient(90deg,#CFE8C6,var(--green),#1F5A10);margin:64px 0 12px}
+.scale i{position:absolute;top:-8px;width:2px;height:26px;background:var(--ink)}
+.scale b{position:absolute;top:-50px;transform:translateX(-50%);font-size:26px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.scale-l{display:flex;justify-content:space-between;font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+.scale-l b{color:var(--ink)}
+
+/* à propos */
+.about{display:grid;grid-template-columns:320px 1fr;gap:64px;align-items:center}
+.about img{width:100%;aspect-ratio:1;object-fit:cover}
+.about p{max-width:36em;margin:0 0 16px}
+.about p.first{font-size:20px}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start}
+.tel{display:inline-block;font-size:clamp(40px,5.6vw,68px);font-weight:300;letter-spacing:-.02em;text-decoration:none;line-height:1;margin:26px 0 8px;font-variant-numeric:tabular-nums}
+.tel:hover{color:var(--green)}
+.mail{display:block;color:#B4BCB1;font-size:17px}
+.next{list-style:none;margin:0;padding:0;counter-reset:n}
+.next li{counter-increment:n;padding:18px 0 18px 54px;border-top:1px solid #2C322B;position:relative;color:#B4BCB1;font-size:16px}
+.next li::before{content:counter(n);position:absolute;left:0;top:18px;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--green);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:700}
+.next li b{display:block;color:#fff;font-size:19px}
+
+footer{padding:30px 0 96px;font-size:13px;color:var(--mute);line-height:1.65}
+footer p{margin:0 0 8px;max-width:70em}
+
+.callbar{display:none}
+
+@media (max-width:980px){
+  nav{display:none}
+  .hero-in{padding-top:64px;padding-bottom:40px;min-height:0}
+  .idcard{position:static;margin-top:32px;align-self:flex-start}
+  .idcard img{width:96px;height:96px}
+  .credit{position:static;margin-top:18px}
+  .hero-photo::after{background:rgba(16,19,16,.72)}
+  .method,.price,.contact-grid,.rev{grid-template-columns:1fr;gap:40px}
+  .proof ul{grid-template-columns:1fr 1fr}
+  .proof li{padding:20px 16px}
+  .proof li:nth-child(odd){border-left:none;padding-left:0}
+  .proof li:nth-child(n+3){border-top:1px solid var(--line)}
+  .stories,.feat-grid{grid-template-columns:1fr}
+  .grid-sold{grid-template-columns:repeat(2,1fr)}
+  .grid-sale{grid-template-columns:repeat(2,1fr)}
+  .about{grid-template-columns:1fr;gap:28px}
+  .about img{max-width:240px}
+  section{padding:60px 0}
+  .score{min-width:0}
+}
+@media (max-width:640px){
+  .bar-cta .btn{display:none}
+  .callbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);padding:10px 16px;gap:10px}
+  .callbar .btn{flex:1;padding:13px 10px;font-size:16px}
+  .proof strong{font-size:36px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ph img,.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="sig" href="#top"><b>Jean-Pascal Rudelle</b><span>Conseiller immobilier <i>efficity</i> · Montpellier</span></a>
+    <nav aria-label="Navigation principale">
+      <a href="#resultats">Résultats</a>
+      <a href="#vendus">Biens vendus</a>
+      <a href="#methode">Méthode</a>
+      <a href="#en-vente">Biens en vente</a>
+      <a href="#avis">Avis</a>
+    </nav>
+    <div class="bar-cta">
+      <a class="bar-tel num" href="tel:+33618455175">06 18 45 51 75</a>
+      <a class="btn sm" href="https://www.efficity.com/jprudelle/estimation">Estimer mon bien</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="hero-photo">
+    <img class="hero-bg" src="img/a01.jpg" alt="Maison en pierre avec cour et terrasse, actuellement en vente">
+    <div class="wrap hero-in">
+      <p class="eyebrow">Montpellier et sa région · depuis plus de 10 ans</p>
+      <h1>Vendre votre bien à Montpellier, <b>au juste prix.</b></h1>
+      <p class="lead">Je m'occupe de votre vente de l'estimation à la signature chez le notaire. Vous avez un seul interlocuteur, et un prix défendu par des ventes réelles.</p>
+      <div class="cta">
+        <a class="btn" href="mailto:jprudelle@efficity.com?subject=Demande%20d%27estimation%20de%20mon%20bien&amp;body=Bonjour%20Monsieur%20Rudelle%2C%0A%0AJe%20souhaite%20faire%20estimer%20mon%20bien.%0A%0AAdresse%20du%20bien%20%3A%0AType%20de%20bien%20%28maison%2C%20appartement%2C%20autre%29%20%3A%0ASurface%20approximative%20%3A%0AMon%20num%C3%A9ro%20de%20t%C3%A9l%C3%A9phone%20%3A%0AMes%20disponibilit%C3%A9s%20pour%20une%20visite%20%3A%0A%0ACordialement%2C%0A">Demander mon estimation offerte</a>
+        <a class="btn line num" href="tel:+33618455175">06 18 45 51 75</a>
+      </div>
+      <p class="reassure">Estimation sur place, gratuite et sans engagement. Réponse sous 24 h les jours ouvrés.<br>Par e-mail : jprudelle@efficity.com · ou <a href="https://www.efficity.com/jprudelle/estimation">estimation en ligne en 2 minutes</a></p>
+      <p class="credit">Maison en pierre de 404 m² à Vers-Pont-du-Gard, en vente</p>
+      <div class="idcard">
+        <img src="img/portrait.png" alt="Portrait de Jean-Pascal Rudelle">
+        <div>
+          <b>Jean-Pascal Rudelle</b>
+          <span>Conseiller immobilier indépendant</span>
+          <span class="stars num">4,4/5 · 14 avis vérifiés</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="proof">
+      <ul>
+        <li><strong class="num">31</strong><span>biens vendus ou sous compromis</span></li>
+        <li><strong class="num">4,4<small>/5</small></strong><span>sur 14 avis clients vérifiés Immodvisor</span></li>
+        <li><strong class="num">10<small> ans +</small></strong><span>d'expérience sur le marché de Montpellier</span></li>
+        <li><strong class="num">13</strong><span>biens en vente aujourd'hui</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<section id="resultats">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Résultats</p>
+      <h2>Ce qu'une bonne stratégie <b>change à une vente.</b></h2>
+      <p>Un bien mal présenté ou mal positionné reste des mois sur le marché et finit par se négocier à la baisse. Trois ventes racontées par mes clients dans leurs avis vérifiés.</p>
+    </div>
+    <div class="stories">
+      <article class="story">
+        <h3>Une maison invendue depuis plus d'un an</h3>
+        <div class="ba"><div><b>+ 1 an</b>sans offre</div><em>→</em><div class="after"><b>2 mois</b>pour une offre</div></div>
+        <p>Un vis-à-vis avec un immeuble bloquait les acheteurs. J'ai présenté le bien comme un immeuble à des investisseurs. La propriétaire a reçu une offre qu'elle a jugée très acceptable.</p>
+        <small>D'après un avis vérifié Immodvisor</small>
+      </article>
+      <article class="story">
+        <h3>Des offres portées de 120 000 à 150 000 €</h3>
+        <div class="ba"><div><b class="num">120 000 €</b>première offre</div><em>→</em><div class="after"><b class="num">150 000 €</b>offre finale</div></div>
+        <p>Une vingtaine de visites organisées auprès d'investisseurs professionnels, mis en concurrence jusqu'à la meilleure offre.</p>
+        <small>D'après un avis vérifié Immodvisor</small>
+      </article>
+      <article class="story">
+        <h3>Une vente gérée entièrement à la place du vendeur</h3>
+        <div class="ba"><div><b>Visites</b>ciblées et optimisées</div><em>→</em><div class="after"><b>Vendu</b>négociation comprise</div></div>
+        <p>Préparation de l'appartement, visites ciblées, négociation et dossier de vente pris en charge du début à la fin.</p>
+        <small>D'après un avis vérifié Immodvisor</small>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="vendus" class="soft">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Références</p>
+      <h2><b>31 biens vendus</b> ou sous compromis.</h2>
+      <p>Maisons familiales, appartements et studios, à Montpellier et dans les communes voisines.</p>
+    </div>
+    <div class="chips" role="group" aria-label="Filtrer les biens vendus">
+      <button class="chip" type="button" id="f-all" data-f="all" aria-pressed="true">Tous (31)</button>
+      <button class="chip" type="button" id="f-maison" data-f="Maison" aria-pressed="false">Maisons (9)</button>
+      <button class="chip" type="button" id="f-appt" data-f="Appartement" aria-pressed="false">Appartements (22)</button>
+    </div>
+    <div class="grid-sold" id="grid-sold">
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v13.jpg" alt="Maison 8 pièces de 220 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Maison · 8 pièces · 220 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v27.jpg" alt="Maison 6 pièces de 170 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Maison · 6 pièces · 170 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v28.jpg" alt="Maison 6 pièces de 150 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Maison · 6 pièces · 150 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v26.jpg" alt="Maison 5 pièces de 145 m² à Les Matelles (34270), vendu"><span class="tag">Vendu</span></div><figcaption><b>Les Matelles (34270)</b><span>Maison · 5 pièces · 145 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v02.jpg" alt="Maison 4 pièces de 106 m² à Pérols (34470), vendu"><span class="tag">Vendu</span></div><figcaption><b>Pérols (34470)</b><span>Maison · 4 pièces · 106 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v18.jpg" alt="Maison 4 pièces de 103 m² à Juvignac (34990), vendu"><span class="tag">Vendu</span></div><figcaption><b>Juvignac (34990)</b><span>Maison · 4 pièces · 103 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v01.jpg" alt="Maison 4 pièces de 100 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Maison · 4 pièces · 100 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v29.jpg" alt="Maison 4 pièces de 100 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Maison · 4 pièces · 100 m²</span></figcaption></figure>
+<figure class="sold" data-t="Maison"><div class="ph"><img loading="lazy" src="img/v10.jpg" alt="Maison 5 pièces de 70 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Maison · 5 pièces · 70 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v25.jpg" alt="Appartement 6 pièces de 106 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 6 pièces · 106 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v17.jpg" alt="Appartement 4 pièces de 84 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 4 pièces · 84 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v04.jpg" alt="Appartement 4 pièces de 82 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 4 pièces · 82 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v31.jpg" alt="Appartement 3 pièces de 80 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 3 pièces · 80 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v19.jpg" alt="Appartement 3 pièces de 70 m² à Montpellier (34080), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34080)</b><span>Appartement · 3 pièces · 70 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v23.jpg" alt="Appartement 3 pièces de 70 m² à Montpellier (34080), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34080)</b><span>Appartement · 3 pièces · 70 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v03.jpg" alt="Appartement 3 pièces de 59 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 3 pièces · 59 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v05.jpg" alt="Appartement 3 pièces de 57 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 3 pièces · 57 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v15.jpg" alt="Appartement 2 pièces de 48 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · 2 pièces · 48 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v11.jpg" alt="Appartement 2 pièces de 43 m² à Montpellier (34070), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34070)</b><span>Appartement · 2 pièces · 43 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v06.jpg" alt="Appartement 2 pièces de 40 m² à Montpellier (34000), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34000)</b><span>Appartement · 2 pièces · 40 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v09.jpg" alt="Appartement 2 pièces de 40 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · 2 pièces · 40 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v30.jpg" alt="Appartement 2 pièces de 37 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · 2 pièces · 37 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v20.jpg" alt="Appartement Studio de 32 m² à Montpellier (34080), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34080)</b><span>Appartement · Studio · 32 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v14.jpg" alt="Appartement Studio de 28 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · Studio · 28 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v24.jpg" alt="Appartement Studio de 26 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · Studio · 26 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v20.jpg" alt="Appartement Studio de 25 m² à Montpellier (34080), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34080)</b><span>Appartement · Studio · 25 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v20.jpg" alt="Appartement Studio de 25 m² à Montpellier (34080), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34080)</b><span>Appartement · Studio · 25 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v12.jpg" alt="Appartement Studio de 22 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · Studio · 22 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v07.jpg" alt="Appartement Studio de 20 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · Studio · 20 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v08.jpg" alt="Appartement Studio de 20 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · Studio · 20 m²</span></figcaption></figure>
+<figure class="sold" data-t="Appartement"><div class="ph"><img loading="lazy" src="img/v16.jpg" alt="Appartement Studio de 18 m² à Montpellier (34090), vendu"><span class="tag">Vendu</span></div><figcaption><b>Montpellier (34090)</b><span>Appartement · Studio · 18 m²</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="methode">
+  <div class="wrap method">
+    <div>
+      <p class="eyebrow">Méthode</p>
+      <h2 style="margin-bottom:30px">Quatre étapes, <b>un seul interlocuteur.</b></h2>
+      <ol class="steps">
+        <li><h3>Estimer</h3><p>Visite de votre bien et étude de marché complète : un prix de présentation justifié par les ventes comparables.</p></li>
+        <li><h3>Mettre en valeur</h3><p>Reportage photo, conseils d'aménagement et annonce rédigée pour votre bien.</p></li>
+        <li><h3>Trouver l'acheteur</h3><p>Diffusion massive de l'annonce, présentation au réseau efficity, sélection des visiteurs et contrôle de leur solvabilité.</p></li>
+        <li><h3>Sécuriser la vente</h3><p>Négociation, organisation des diagnostics, montage et suivi du dossier jusqu'à l'acte authentique.</p></li>
+      </ol>
+    </div>
+    <aside class="pledge">
+      <h3>Mes engagements</h3>
+      <ul>
+        <li><b>Un prix argumenté.</b> Je vous explique comment il est calculé, y compris quand il est inférieur à celui que vous espériez.</li>
+        <li><b>Des acheteurs sélectionnés.</b> Pas de visites inutiles chez vous.</li>
+        <li><b>Un suivi jusqu'au bout.</b> Je reste votre interlocuteur après le compromis, et après la vente.</li>
+        <li><b>La force d'un réseau.</b> Un fichier de plus d'un million d'acheteurs potentiels chez efficity.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section id="en-vente" class="dark">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Biens en vente</p>
+      <h2>Les biens que l'on me confie <b>en ce moment.</b></h2>
+      <p>De la maison de caractère au studio. Chaque bien est présenté avec le même soin.</p>
+    </div>
+    <div class="feat-grid">
+<a class="sale feat" href="https://www.efficity.com/achat-immobilier/maison_200-m2_montpellier_34090_30127497/"><div class="ph"><img loading="lazy" src="img/a02.jpg" alt="Maison 9 pièces de 200 m² à Montpellier (34090)"></div><div class="meta"><b>Montpellier (34090)</b><span>Maison · 9 pièces · 200 m²</span><strong>770 000 €</strong></div></a>
+<a class="sale feat" href="https://www.efficity.com/achat-immobilier/maison_404-m2_vers-pont-du-gard_30210_30160583/"><div class="ph"><img loading="lazy" src="img/a01.jpg" alt="Maison 10 pièces de 404 m² à Vers-Pont-du-Gard (30210)"></div><div class="meta"><b>Vers-Pont-du-Gard (30210)</b><span>Maison · 10 pièces · 404 m²</span><strong>815 000 €</strong></div></a>
+<a class="sale feat" href="https://www.efficity.com/achat-immobilier/maison_144-m2_montgenevre_05100_28502284/"><div class="ph"><img loading="lazy" src="img/a13.jpg" alt="Chalet 6 pièces de 144 m² à Montgenèvre (05100)"></div><div class="meta"><b>Montgenèvre (05100)</b><span>Chalet · 6 pièces · 144 m²</span><strong>1 050 000 €</strong></div></a>
+    </div>
+    <div class="grid-sale">
+<a class="sale" href="https://www.efficity.com/achat-immobilier/maison_202-m2_montpellier_34070_29791758/"><div class="ph"><img loading="lazy" src="img/a05.jpg" alt="Maison 9 pièces de 202 m² à Montpellier (34070)"></div><div class="meta"><b>Montpellier (34070)</b><span>Maison · 9 pièces · 202 m²</span><strong>599 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/maison_103-m2_montpellier_34090_28398803/"><div class="ph"><img loading="lazy" src="img/a03.jpg" alt="Maison 5 pièces de 104 m² à Montpellier (34090)"></div><div class="meta"><b>Montpellier (34090)</b><span>Maison · 5 pièces · 104 m²</span><strong>475 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_39-m2_paris_75011_29848664/"><div class="ph"><img loading="lazy" src="img/a06.jpg" alt="Appartement 2 pièces de 39 m² à Paris (75011)"></div><div class="meta"><b>Paris (75011)</b><span>Appartement · 2 pièces · 39 m²</span><strong>439 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_74-m2_montpellier_34090_28551513/"><div class="ph"><img loading="lazy" src="img/a12.jpg" alt="Appartement 3 pièces de 74 m² à Montpellier (34090)"></div><div class="meta"><b>Montpellier (34090)</b><span>Appartement · 3 pièces · 74 m²</span><strong>225 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_63-m2_montpellier_34080_29648901/"><div class="ph"><img loading="lazy" src="img/a07.jpg" alt="Appartement 3 pièces de 63 m² à Montpellier (34080)"></div><div class="meta"><b>Montpellier (34080)</b><span>Appartement · 3 pièces · 63 m²</span><strong>224 200 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_67-m2_montpellier_34070_29103321/"><div class="ph"><img loading="lazy" src="img/a09.jpg" alt="Appartement 4 pièces de 67 m² à Montpellier (34070)"></div><div class="meta"><b>Montpellier (34070)</b><span>Appartement · 4 pièces · 67 m²</span><strong>214 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_45-m2_montpellier_34070_29183599/"><div class="ph"><img loading="lazy" src="img/a04.jpg" alt="Appartement 2 pièces de 45 m² à Montpellier (34070)"></div><div class="meta"><b>Montpellier (34070)</b><span>Appartement · 2 pièces · 45 m²</span><strong>180 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_70-m2_montpellier_34070_29432536/"><div class="ph"><img loading="lazy" src="img/a08.jpg" alt="Appartement 3 pièces de 70 m² à Montpellier (34070)"></div><div class="meta"><b>Montpellier (34070)</b><span>Appartement · 3 pièces · 70 m²</span><strong>150 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_34-m2_castelnau-le-lez_34170_28862443/"><div class="ph"><img loading="lazy" src="img/a10.jpg" alt="Appartement Studio de 34 m² à Castelnau-le-Lez (34170)"></div><div class="meta"><b>Castelnau-le-Lez (34170)</b><span>Appartement · Studio · 34 m²</span><strong>145 000 €</strong></div></a>
+<a class="sale" href="https://www.efficity.com/achat-immobilier/appartement_17-m2_montpellier_34090_27492917/"><div class="ph"><img loading="lazy" src="img/a11.jpg" alt="Appartement Studio de 17 m² à Montpellier (34090)"></div><div class="meta"><b>Montpellier (34090)</b><span>Appartement · Studio · 17 m²</span><strong>89 000 €</strong></div></a>
+    </div>
+  </div>
+</section>
+
+<section id="avis">
+  <div class="wrap">
+    <div class="rev">
+      <div class="score">
+        <strong class="num">4,4<small>/5</small></strong>
+        <span>14 avis clients vérifiés</span>
+        <span>Collecte contrôlée par Immodvisor, tiers de confiance AFNOR</span>
+        <a href="https://www.immodvisor.com/pro/efficity-jean-pascal-rudelle-montpellier-34090-14961.html">Lire tous les avis</a>
+      </div>
+      <div>
+        <p class="eyebrow">Avis clients</p>
+        <blockquote>« Il sait nous mettre en confiance. »</blockquote>
+        <cite>Chaniclo, vendeur, avis vérifié Immodvisor</cite>
+        <ul class="themes" aria-label="Ce qui revient le plus dans les avis">
+          <li>Disponible</li><li>Réactif</li><li>De bon conseil</li><li>Acheteurs bien ciblés</li><li>Suivi après la vente</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prix" class="soft">
+  <div class="wrap price">
+    <div>
+      <p class="eyebrow">Marché local</p>
+      <h2>Le prix au m² <b>à Montpellier.</b></h2>
+      <p style="color:var(--mute);margin:16px 0 26px;max-width:30em">Entre le bas et le haut de la fourchette, l'écart dépasse le simple au double. La place exacte de votre bien dépend de son quartier, de son état et de ses extérieurs. C'est l'objet de l'estimation sur place.</p>
+      <a class="btn" href="mailto:jprudelle@efficity.com?subject=Demande%20d%27estimation%20de%20mon%20bien&amp;body=Bonjour%20Monsieur%20Rudelle%2C%0A%0AJe%20souhaite%20faire%20estimer%20mon%20bien.%0A%0AAdresse%20du%20bien%20%3A%0AType%20de%20bien%20%28maison%2C%20appartement%2C%20autre%29%20%3A%0ASurface%20approximative%20%3A%0AMon%20num%C3%A9ro%20de%20t%C3%A9l%C3%A9phone%20%3A%0AMes%20disponibilit%C3%A9s%20pour%20une%20visite%20%3A%0A%0ACordialement%2C%0A">Situer mon bien dans cette fourchette</a>
+    </div>
+    <div>
+      <div class="scale" role="img" aria-label="Fourchette de prix au mètre carré à Montpellier : 2 390 euros en bas, 3 440 euros en moyenne, 4 770 euros en haut">
+        <i style="left:44.1%"></i><b style="left:44.1%">3 440 €/m²</b>
+      </div>
+      <div class="scale-l"><span><b>2 390 €</b> prix bas</span><span>prix moyen</span><span>prix haut <b>4 770 €</b></span></div>
+      <p style="font-size:14px;color:var(--mute);margin:18px 0 0">Estimation efficity, octobre 2026, fiabilité forte.</p>
+    </div>
+  </div>
+</section>
+
+<section id="apropos">
+  <div class="wrap about">
+    <img src="img/portrait.png" alt="Jean-Pascal Rudelle, conseiller immobilier à Montpellier">
+    <div>
+      <p class="eyebrow">À propos</p>
+      <h2 style="margin-bottom:24px">Jean-Pascal Rudelle, <b>votre interlocuteur unique.</b></h2>
+      <p class="first">Conseiller immobilier indépendant à Montpellier depuis plus de dix ans, je travaille avec le réseau efficity.</p>
+      <p>Quand vous m'appelez, c'est moi qui réponds. C'est moi qui estime votre bien, qui le fais visiter, qui négocie et qui vous accompagne chez le notaire.</p>
+      <p>Mes clients me confient des biens très différents, de la maison de famille au studio d'investissement. Ma façon de travailler reste la même : un prix juste, une présentation soignée et des acheteurs sérieux.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="dark">
+  <div class="wrap contact-grid">
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h2>Parlons de <b>votre projet.</b></h2>
+      <a class="tel" href="tel:+33618455175">06 18 45 51 75</a>
+      <span class="mail">jprudelle@efficity.com</span>
+      <span class="mail" style="font-size:15px;margin-top:6px">Le bouton ci-dessous ouvre un e-mail déjà rédigé. Il vous reste à compléter l'adresse du bien.</span>
+      <div class="cta">
+        <a class="btn" href="mailto:jprudelle@efficity.com?subject=Demande%20d%27estimation%20de%20mon%20bien&amp;body=Bonjour%20Monsieur%20Rudelle%2C%0A%0AJe%20souhaite%20faire%20estimer%20mon%20bien.%0A%0AAdresse%20du%20bien%20%3A%0AType%20de%20bien%20%28maison%2C%20appartement%2C%20autre%29%20%3A%0ASurface%20approximative%20%3A%0AMon%20num%C3%A9ro%20de%20t%C3%A9l%C3%A9phone%20%3A%0AMes%20disponibilit%C3%A9s%20pour%20une%20visite%20%3A%0A%0ACordialement%2C%0A">Demander mon estimation offerte</a>
+      </div>
+    </div>
+    <ol class="next" aria-label="Ce qui se passe après votre appel">
+      <li><b>Un premier échange</b>Vous me décrivez votre bien et votre projet. Réponse sous 24 h les jours ouvrés.</li>
+      <li><b>Une visite chez vous</b>Je découvre le bien et je réponds à vos questions. Rendez-vous proposé sous 48 h.</li>
+      <li><b>Un prix argumenté</b>Vous recevez mon estimation, appuyée sur le marché local. Vous décidez ensuite, sans engagement.</li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Jean-Pascal Rudelle, EI, est agent commercial mandataire en immobilier, immatriculé au Registre Spécial des Agents Commerciaux du Tribunal de Commerce de Montpellier sous le n° 480932581.</p>
+    <p>Mandant : EFFICITY SAS, RCS Paris 497 617 746, 48 avenue de Villiers, 75017 Paris, titulaire de la carte professionnelle CPI 7501 2015 000 002 025 délivrée par la CCI Paris Île-de-France. Garantie financière de 500 000 € : GALIAN Assurances, 89 rue de la Boétie, 75008 Paris. efficity est une marque déposée.</p>
+    <p><a href="https://www.efficity.com/mentions-legales/">Mentions légales efficity</a> · <a href="https://diszln7ft1ccx.cloudfront.net/pdf/BAREME_NATIONAL.pdf">Barème d'honoraires</a> · <a href="https://www.efficity.com/privacy-policy/">Politique de confidentialité efficity</a></p>
+    <p>Site édité par Jean-Pascal Rudelle, jprudelle@efficity.com. Hébergement : GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis. Ce site ne dépose aucun cookie et ne collecte aucune donnée personnelle.</p>
+  </div>
+</footer>
+
+<div class="callbar">
+  <a class="btn line" href="tel:+33618455175">Appeler</a>
+  <a class="btn" href="https://www.efficity.com/jprudelle/estimation">Estimer mon bien</a>
+</div>
+
+<script>
+(function(){
+  var chips=document.querySelectorAll('.chip'),cards=document.querySelectorAll('#grid-sold .sold');
+  chips.forEach(function(c){c.addEventListener('click',function(){
+    var f=c.getAttribute('data-f');
+    chips.forEach(function(x){x.setAttribute('aria-pressed',x===c?'true':'false')});
+    cards.forEach(function(k){k.hidden=!(f==='all'||k.getAttribute('data-t')===f)});
+  })});
+})();
+</script>
+</body>
+</html>
